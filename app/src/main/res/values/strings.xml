@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">AMazeByMinKim</string>
+    <string name="app_name">A Maze By Min Kim</string>
+    <string name="greeting">HiHi</string>
+    <string name="builderText">Builder</string>
+    <string name="driverText">Driver</string>
+    <string name="exploreText">Explore</string>
+    <string name="revisitText">Revisit</string>
+    <string-array name="builder">
+        <item>Random</item>
+        <item>Prim</item>
+        <item>Boruvka</item>
+    </string-array>
+    <string-array name="driver">
+        <item>Manual</item>
+        <item>Wizard</item>
+        <item>Smart Wizard</item>
+        <item>Smarter Wallfollower</item>
+    </string-array>
 </resources>
