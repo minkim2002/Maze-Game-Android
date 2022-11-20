@@ -1,10 +1,16 @@
 <resources>
-    <string name="app_name">A Maze By Min Kim</string>
-    <string name="greeting">HiHi</string>
+    <string name="appName">A Maze By Min Kim</string>
+    <string name="greetingText">Welcome to the maze</string>
     <string name="builderText">Builder</string>
     <string name="driverText">Driver</string>
+    <string name="modeText">Customize Your Robot</string>
+    <string name="robotText">Robot</string>
+    <string name="roomText">Maze Rooms</string>
     <string name="exploreText">Explore</string>
     <string name="revisitText">Revisit</string>
+    <string name="loadingText">Building the Walls…</string>
+
+    <string name="playText">Begin Maze</string>
     <string-array name="builder">
         <item>Random</item>
         <item>Prim</item>
@@ -15,5 +21,9 @@
         <item>Wizard</item>
         <item>Smart Wizard</item>
         <item>Smarter Wallfollower</item>
+    </string-array>
+    <string-array name="robot">
+        <item>Reliable</item>
+        <item>Unreliable</item>
     </string-array>
 </resources>

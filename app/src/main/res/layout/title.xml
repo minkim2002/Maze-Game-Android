@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="@string/greeting"
+        android:text="@string/greetingText"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/colorPrimary"
         android:textSize="36sp"
@@ -37,15 +37,15 @@
         android:max="14"
         android:thumb="@mipmap/ic_launcher_round"
         android:thumbOffset="1.5dp"
-        android:theme="@style/CustomSeekBar"
-        app:layout_constraintBottom_toTopOf="@+id/builderLayout"
+        android:theme="@style/MySeekBar"
+        app:layout_constraintBottom_toTopOf="@+id/builder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:targetApi="lollipop" />
 
     <LinearLayout
-        android:id="@+id/builderLayout"
+        android:id="@+id/builder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"
@@ -54,7 +54,7 @@
         android:layout_marginRight="5dp"
         android:orientation="horizontal"
         android:gravity="start"
-        app:layout_constraintBottom_toTopOf="@id/driverLayout"
+        app:layout_constraintBottom_toTopOf="@id/room"
         app:layout_constraintTop_toBottomOf="@+id/seekBar" >
 
         <TextView
@@ -72,68 +72,70 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/driverLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="1dp"
+        android:id="@+id/room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="start"
-        app:layout_constraintBottom_toTopOf="@id/mazeSelectionLayout"
-        app:layout_constraintTop_toBottomOf="@+id/builderLayout">
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/builder"
+        app:layout_constraintBottom_toTopOf="@+id/maze"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-            android:id="@+id/driverText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/driverText"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/roomText"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp" />
 
-        <Spinner
-            android:id="@+id/driverSpinner"
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/roomSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/maze"
         style="?android:attr/buttonBarButtonStyle"
-        android:id="@+id/mazeSelectionLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/room"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/driverLayout">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/revisitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="4dp"
             android:text="@string/revisitText"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary" />
-
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/exploreButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="4dp"
             android:text="@string/exploreText"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
