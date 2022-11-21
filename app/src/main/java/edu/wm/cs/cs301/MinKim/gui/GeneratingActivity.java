@@ -43,14 +43,16 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable {
         driver.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 LinearLayout robotLayout = findViewById(R.id.robotLayout);
-                if(!parent.getItemAtPosition(position).toString().equals("Wallfollower") &&
-                        !parent.getItemAtPosition(position).toString().equals("SmarterWallfollower") ) robotLayout.setVisibility(View.INVISIBLE);
+                if(!parent.getItemAtPosition(position).toString().equals("Wall Follower") &&
+                        !parent.getItemAtPosition(position).toString().equals("Wizard"))
+                    robotLayout.setVisibility(View.INVISIBLE);
                 else robotLayout.setVisibility(View.VISIBLE);
             }
             public void onNothingSelected(AdapterView<?> parent) {
                 LinearLayout robotLayout = findViewById(R.id.robotLayout);
-                if(!parent.getSelectedItem().toString().equals("Wallfollower") &&
-                        !parent.getSelectedItem().toString().equals("SmarterWallfollower") ) robotLayout.setVisibility(View.INVISIBLE);
+                if(!parent.getSelectedItem().toString().equals("Wall Follower") &&
+                        !parent.getSelectedItem().toString().equals("Wizard"))
+                    robotLayout.setVisibility(View.INVISIBLE);
                 else robotLayout.setVisibility(View.VISIBLE);
             }
         });

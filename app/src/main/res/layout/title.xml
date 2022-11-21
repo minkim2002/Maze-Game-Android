@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/skillLevelLayout"
+        android:id="@+id/difficultyLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="292dp"
@@ -37,16 +37,16 @@
         app:layout_constraintTop_toBottomOf="@id/greetingText">
 
         <TextView
-            android:id="@+id/skillLevelText"
+            android:id="@+id/difficultyText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/skillLevelText"
+            android:text="@string/difficultyText"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@id/seekBar" />
+            app:layout_constraintBottom_toTopOf="@id/difficultySeekBar" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/seekBar"
+            android:id="@+id/difficultySeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -54,7 +54,7 @@
             android:paddingStart="50dp"
             android:paddingEnd="50dp"
             android:splitTrack="false"
-            app:layout_constraintTop_toBottomOf="@id/skillLevelText" />
+            app:layout_constraintTop_toBottomOf="@id/difficultyText" />
     </LinearLayout>
 
     <LinearLayout
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/skillLevelLayout"
+        app:layout_constraintTop_toBottomOf="@+id/difficultyLayout"
         app:layout_constraintBottom_toTopOf="@+id/roomSelectionLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="appName">A Maze By Min Kim</string>
     <string name="greetingText">Welcome to the maze</string>
@@ -29,7 +30,7 @@
     <string name="showMapText">Show Map</string>
     <string name="showWallsText">Show All Walls</string>
     <string name="showCorrectPathText">Show the Correct Path</string>
-    <string name="skillLevelText">Difficulty</string>
+    <string name="difficultyText">Difficulty</string>
     <string name="shortestPathText">Shortest Path: %1$d</string>
 
     <string name="menuText">||</string>

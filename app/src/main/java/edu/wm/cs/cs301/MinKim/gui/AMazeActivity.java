@@ -1,10 +1,8 @@
-
 package edu.wm.cs.cs301.MinKim.gui;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -29,84 +27,90 @@ import edu.wm.cs.cs301.MinKim.R;
  * @author Min Kim
  * Class: AMazeActivity
  * Responsibilities: Serves as a main screen for the maze game, select a skill level, choose a builder,
- * choose whether there will be rooms or not, and connect other screens
+ * choose whether there will be rooms or not, and connect other activities
  * Collaborators: GeneratingActivity, PlayManuallyActivity, PlayAnimationActivity
  */
 public class AMazeActivity extends AppCompatActivity {
 
     /**
-     * Start the background animation, make the builder
-     * spinner with various builder options, set up the navigation buttons
+     * Create the builder spinner with various builder options,
+     * set up the navigating buttons which will generate the maze.
      * @param savedInstanceState a reference to the bundle object
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder(StrictMode.getVmPolicy())
-                .detectLeakedClosableObjects()
-                .penaltyLog()
-                .build());
         setContentView(R.layout.title);
-        Log.v("Launching Maze App", "Passed");
+        Log.v("Launching Maze App", "Successful");
 
+        //Builder spinner with various builder options
         Spinner builder = findViewById(R.id.builderSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.builder, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         builder.setAdapter(adapter);
-        Log.v("Launching Maze App", "Passed");
-        setUpNavigationButton((Button) findViewById(R.id.revisitButton));
-        setUpNavigationButton((Button) findViewById(R.id.exploreButton));
+        // Listeners for the buttons that will generate the maze
+        setGeneration((Button) findViewById(R.id.revisitButton));
+        setGeneration((Button) findViewById(R.id.exploreButton));
     }
 
-    public void setUpNavigationButton(Button navigationButton) {
-        Log.v("Launching Maze App", "yeah");
-        navigationButton.setOnClickListener(new View.OnClickListener(){
+    /**
+     * Configure the listeners for the buttons that will generate the maze
+     * @param button the button the listener resides in
+     */
+    public void setGeneration(Button button) {
+        button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
-                Log.v("Launching Maze App", "Passed");
+                // receive the selected builder
                 Spinner builder = findViewById(R.id.builderSpinner);
                 String builderString = builder.getSelectedItem().toString();
-                Log.v("Launching Maze App", "Passed");
-                SeekBar skillLevel = findViewById(R.id.seekBar);
-                int lv = skillLevel.getProgress();
-
+                // receive the selected level
+                SeekBar difficultyLevel = findViewById(R.id.difficultySeekBar);
+                int lv = difficultyLevel.getProgress();
+                //receive the information about the presence of rooms
                 SwitchMaterial room = findViewById(R.id.roomSwitch);
                 boolean isRoom = room.isChecked();
 
-
+                //Generating intent with received information
                 Intent generation = new Intent(AMazeActivity.this, GeneratingActivity.class);
                 generation.putExtra("Builder", builderString);
-                generation.putExtra("SkillLevel", lv);
+                generation.putExtra("Difficulty Level", lv);
                 generation.putExtra("Room", isRoom);
 
+                //Toast as a notification about the new activity
                 Toast toast = Toast.makeText(AMazeActivity.this, "Generating maze", Toast.LENGTH_SHORT);
                 toast.show();
-                Log.v("Launching Maze App", "Passed");
                 startForResult.launch(generation);
             }
         });
     }
 
+    /**
+     * After the maze is generated, the generating activity returns the user inputted driver
+     * and robot if inputted. Then, the game starts based on the information received
+     * @param result returned information from the maze generation
+     */
     ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
-
+            //check the code
             if (result.getResultCode() == Activity.RESULT_OK) {
                 Bundle maze = result.getData().getExtras();
-                Log.v("Launching Maze App", "Passed");
-
                 assert(maze != null) : "Error: maze configuration is not supposed to be null";
 
+                //Configure the driver and robot bases on the information received
                 String driverString = Objects.requireNonNull(maze.get("Driver")).toString();
                 String robotString = Objects.requireNonNull(maze.get("Robot")).toString();
                 Log.v("Driver Chosen", driverString);
                 Log.v("Robot Chosen", robotString);
 
+                //Game intent with given information
                 Intent game = new Intent(AMazeActivity.this,
                         (driverString.equals("Manual") ? PlayManuallyActivity.class : PlayAnimationActivity.class));
                 game.putExtra("Maze", "");
                 game.putExtra("Driver", driverString);
                 game.putExtra("Robot", robotString);
 
+                //Toast as a notification about the new activity
                 Toast toast = Toast.makeText(AMazeActivity.this, "Loading game", Toast.LENGTH_SHORT);
                 toast.show();
                 startActivity(game);
