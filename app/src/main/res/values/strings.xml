@@ -19,12 +19,13 @@
     <string-array name="driver">
         <item>Manual</item>
         <item>Wizard</item>
-        <item>Smart Wizard</item>
-        <item>Smarter Wallfollower</item>
+        <item>Wall Follower</item>
     </string-array>
     <string-array name="robot">
-        <item>Reliable</item>
-        <item>Unreliable</item>
+        <item>Premium</item>
+        <item>Mediocre</item>
+        <item>SoSo</item>
+        <item>Shaky</item>
     </string-array>
     <string name="pathLengthText">Path Length: %1$d</string>
     <string name="showMapText">Show Map</string>
