@@ -4,7 +4,9 @@ package edu.wm.cs.cs301.MinKim.gui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -32,11 +34,65 @@ import edu.wm.cs.cs301.MinKim.R;
  */
 public class AMazeActivity extends AppCompatActivity {
 
+    /**
+     * Start the background animation, make the builder
+     * spinner with various builder options, set up the navigation buttons
+     * @param savedInstanceState a reference to the bundle object
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder(StrictMode.getVmPolicy())
+                .detectLeakedClosableObjects()
+                .penaltyLog()
+                .build());
+        setContentView(R.layout.title);
+        Log.v("Launching Maze App", "Passed");
+
+        Spinner builder = findViewById(R.id.builderSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.builder, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        builder.setAdapter(adapter);
+        Log.v("Launching Maze App", "Passed");
+        setUpNavigationButton((Button) findViewById(R.id.revisitButton));
+        setUpNavigationButton((Button) findViewById(R.id.exploreButton));
+    }
+
+    public void setUpNavigationButton(Button navigationButton) {
+        Log.v("Launching Maze App", "yeah");
+        navigationButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view) {
+                Log.v("Launching Maze App", "Passed");
+                Spinner builder = findViewById(R.id.builderSpinner);
+                String builderString = builder.getSelectedItem().toString();
+                Log.v("Launching Maze App", "Passed");
+                SeekBar skillLevel = findViewById(R.id.seekBar);
+                int lv = skillLevel.getProgress();
+
+                SwitchMaterial room = findViewById(R.id.roomSwitch);
+                boolean isRoom = room.isChecked();
+
+
+                Intent generation = new Intent(AMazeActivity.this, GeneratingActivity.class);
+                generation.putExtra("Builder", builderString);
+                generation.putExtra("SkillLevel", lv);
+                generation.putExtra("Room", isRoom);
+
+                Toast toast = Toast.makeText(AMazeActivity.this, "Generating maze", Toast.LENGTH_SHORT);
+                toast.show();
+                Log.v("Launching Maze App", "Passed");
+                startForResult.launch(generation);
+            }
+        });
+    }
+
     ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
+
             if (result.getResultCode() == Activity.RESULT_OK) {
                 Bundle maze = result.getData().getExtras();
+                Log.v("Launching Maze App", "Passed");
 
                 assert(maze != null) : "Error: maze configuration is not supposed to be null";
 
@@ -60,59 +116,4 @@ public class AMazeActivity extends AppCompatActivity {
             }
         }
     });
-
-    /**
-     * Start the background animation, make the builder
-     * spinner with various builder options, set up the navigation buttons
-     * @param savedInstanceState a reference to the bundle object
-     */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.title);
-        Log.v("Launching Maze App", "Passed");
-
-        Spinner builder = findViewById(R.id.builderSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.builder, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        builder.setAdapter(adapter);
-
-        ActivityResultLauncher<Intent> getResult = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        // There are no request codes
-                        Intent data = result.getData();
-                    }
-                });
-
-        setUpNavigationButton((Button) findViewById(R.id.revisitButton));
-        setUpNavigationButton((Button) findViewById(R.id.exploreButton));
-    }
-
-    public void setUpNavigationButton(Button navigationButton) {
-        navigationButton.setOnClickListener(view -> {
-
-            Spinner builder = findViewById(R.id.builderSpinner);
-            String builderString = builder.getSelectedItem().toString();
-
-            SeekBar skillLevel = findViewById(R.id.seekBar);
-            int lv = skillLevel.getProgress();
-
-            SwitchMaterial room = findViewById(R.id.roomSwitch);
-            boolean isRoom = room.isChecked();
-
-
-            Intent generation = new Intent(AMazeActivity.this, GeneratingActivity.class);
-            generation.putExtra("Builder", builderString);
-            generation.putExtra("SkillLevel", lv);
-            generation.putExtra("Room", isRoom);
-
-            // make a new toast to alert the user of the new activity, start the new activity
-            // and await the result
-            Toast toast = Toast.makeText(AMazeActivity.this, "Generating maze", Toast.LENGTH_SHORT);
-            toast.show();
-            startForResult.launch(generation);
-        });
-    }
 }

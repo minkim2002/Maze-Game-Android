@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,9 +26,9 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.generating);
 
+        handler = new Handler(Looper.getMainLooper());
         generatingThread = new Thread(this);
         generatingThread.start();
-        handler = new Handler(Looper.myLooper());
 
         Spinner robot = findViewById(R.id.robotSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.robot, android.R.layout.simple_spinner_item);
@@ -82,9 +81,9 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable {
         Log.v("SkillLevel", ""+intent.getIntExtra("SkillLevel", 0));
         Log.v("Builder", ""+intent.getStringExtra("Builder"));
         Log.v("Room", ""+intent.getBooleanExtra("Room", false));
-        ProgressBar progressBar = findViewById(R.id.progressBar);
+
         int currentProgress = 0;
-        while (currentProgress <= 100) {
+        while (currentProgress < 100) {
             try {
                 Thread.sleep(1000);
             } catch (Exception e) {
@@ -93,7 +92,6 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable {
                 return;
             }
             currentProgress += 10;
-            progressBar.setProgress(currentProgress);
         }
 
         handler.post(new Runnable() {
