@@ -6,56 +6,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_image"
-    tools:context="edu.wm.cs.cs301.MinKim.gui.AMazeActivity">
+    tools:context=".gui.AMazeActivity">
 
     <TextView
-        android:id="@+id/greetingView"
+        android:id="@+id/greetingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:gravity="center_horizontal"
         android:text="@string/greetingText"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/colorPrimary"
         android:textSize="36sp"
         app:fontFamily="casual"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.644"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19" />
-
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="7.5dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="300dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="1dp"
-        android:gravity="center"
-        android:max="14"
-        android:thumb="@mipmap/ic_launcher_round"
-        android:thumbOffset="1.5dp"
-        android:theme="@style/MySeekBar"
-        app:layout_constraintBottom_toTopOf="@+id/builder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:targetApi="lollipop" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/builder"
+        android:id="@+id/skillLevelLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="292dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/greetingText">
+
+        <TextView
+            android:id="@+id/skillLevelText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skillLevelText"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/seekBar" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:max="14"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
+            android:splitTrack="false"
+            app:layout_constraintTop_toBottomOf="@id/skillLevelText" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/builderLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:gravity="start"
-        app:layout_constraintBottom_toTopOf="@id/room"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar" >
+        app:layout_constraintTop_toBottomOf="@+id/skillLevelLayout"
+        app:layout_constraintBottom_toTopOf="@+id/roomSelectionLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/builderText"
@@ -72,13 +82,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/room"
+        android:id="@+id/roomSelectionLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/builder"
-        app:layout_constraintBottom_toTopOf="@+id/maze"
+        app:layout_constraintTop_toBottomOf="@+id/builderLayout"
+        app:layout_constraintBottom_toTopOf="@+id/mazeSelectionLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -86,7 +96,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
             android:text="@string/roomText"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp" />
@@ -99,14 +108,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/maze"
+        android:id="@+id/mazeSelectionLayout"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/room"
+        app:layout_constraintTop_toBottomOf="@+id/roomSelectionLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -116,13 +125,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:paddingHorizontal="6dp"
-            android:paddingVertical="4dp"
+            android:paddingHorizontal="-6dp"
+            android:paddingVertical="-4dp"
             android:text="@string/revisitText"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/exploreButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -131,15 +140,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:paddingHorizontal="6dp"
-            android:paddingVertical="4dp"
+            android:paddingHorizontal="-6dp"
+            android:paddingVertical="-4dp"
             android:text="@string/exploreText"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/colorHighlight"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/revisitButton"
+            app:layout_constraintEnd_toEndOf="parent" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

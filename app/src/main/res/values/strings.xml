@@ -3,13 +3,12 @@
     <string name="greetingText">Welcome to the maze</string>
     <string name="builderText">Builder</string>
     <string name="driverText">Driver</string>
-    <string name="modeText">Customize Your Robot</string>
     <string name="robotText">Robot</string>
+    <string name="modeText">Customize Your Robot</string>
     <string name="roomText">Maze Rooms</string>
     <string name="exploreText">Explore</string>
     <string name="revisitText">Revisit</string>
     <string name="loadingText">Building the Walls…</string>
-
     <string name="playText">Begin Maze</string>
     <string-array name="builder">
         <item>Random</item>
@@ -26,4 +25,39 @@
         <item>Reliable</item>
         <item>Unreliable</item>
     </string-array>
+    <string name="pathLengthText">Path Length: %1$d</string>
+    <string name="showMapText">Show Map</string>
+    <string name="showWallsText">Show All Walls</string>
+    <string name="showCorrectPathText">Show the Correct Path</string>
+    <string name="skillLevelText">Difficulty</string>
+    <string name="shortestPathText">Shortest Path: %1$d</string>
+
+    <string name="menuText">||</string>
+    <string name="menuButton">Menu button</string>
+    <string name="shortcutText">Shortcut</string>
+
+    <string name="startAutoText">Start Animation</string>
+    <string name="stopAutoText">Stop Animation</string>
+    <string name="autoSpeedText">Animation Speed</string>
+
+    <string name="energyConsumptionText">Energy consumption</string>
+    <string name="zoomInButton">Zoom in</string>
+    <string name="zoomOutButton">Zoom out</string>
+    <string name="slow">Slow</string>
+    <string name="fast">Fast</string>
+
+    <string name="sensorsText">Sensors</string>
+    <string name="forwardButton">Forward</string>
+    <string name="leftButton">Left</string>
+    <string name="rightButton">Right</string>
+    <string name="backwardButton">Backward</string>
+    <string name="jumpButton">Jump</string>
+
+    <string name="totalEnergyConsumptionText">Energy Consumption: %1$s</string>
+    <string name="newMazeText">Start New Maze</string>
+
+    <string name="winningText">Maze Solved</string>
+    <string name="losingText">Maze not Solved</string>
+    <string name="WinningText">Go2Winning</string>
+    <string name="LosingText">Go2Losing</string>
 </resources>

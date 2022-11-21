@@ -1,6 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".gui.PlayAnimationActivity">
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/pathLengthText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/pathLengthText"
+        android:textSize="28sp"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/menuButton"
+        android:contentDescription="@string/menuButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginVertical="10dp"
+        android:layout_marginEnd="10dp"
+        android:paddingVertical="5dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/zoomLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/zoomOutButton"
+            android:contentDescription="@string/zoomOutButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/colorPrimary"
+            />
+
+        <ImageView
+            android:id="@+id/zoomInButton"
+            android:contentDescription="@string/zoomInButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/colorPrimary"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/pathLengthText">
+
+        <TextView
+            android:id="@+id/energyConsumptionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/energyConsumptionText"
+            android:textSize="24sp"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@id/pathLengthText"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:id="@+id/energyConsumptionBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:progress="100"
+            app:layout_constraintTop_toBottomOf="@id/energyConsumptionText"
+            app:layout_constraintStart_toStartOf="@id/energyConsumptionText"
+            app:layout_constraintEnd_toEndOf="@id/pathLengthText"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="225dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@+id/pathLengthText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/winningButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/WinningText"
+            android:textSize="36sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/losingButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/LosingText"
+            android:textSize="36sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/winningButton" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/sensorsText"
+        android:textSize="24sp"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/forwardSensor"
+        app:layout_constraintStart_toStartOf="@id/leftSensor"
+        app:layout_constraintEnd_toEndOf="@id/rightSensor"/>
+
+    <View
+        android:id="@+id/forwardSensor"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:paddingHorizontal="10dp"
+        android:background="@color/colorSecondary"
+        app:layout_constraintBottom_toTopOf="@id/rightSensor"
+        app:layout_constraintEnd_toStartOf="@id/rightSensor"/>
+
+    <View
+        android:id="@+id/rightSensor"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="15dp"
+        android:paddingHorizontal="10dp"
+        android:background="@color/colorSecondary"
+        app:layout_constraintBottom_toTopOf="@id/backwardSensor"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+        android:id="@+id/backwardSensor"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="5dp"
+        android:paddingHorizontal="10dp"
+        android:background="@color/colorSecondary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightSensor"/>
+
+    <View
+        android:id="@+id/leftSensor"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:paddingHorizontal="10dp"
+        android:background="@color/colorSecondary"
+        app:layout_constraintBottom_toTopOf="@id/backwardSensor"
+        app:layout_constraintEnd_toStartOf="@id/backwardSensor"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/animationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/stopAutoText"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/animationSpeedLayout"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/animationSpeedLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/animationSpeedText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/autoSpeedText"
+            android:textSize="24sp"
+            android:textColor="@color/colorPrimary" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            app:layout_constraintTop_toBottomOf="@id/animationSpeedText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/slowText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_alignParentStart="true"
+                android:text="@string/slow"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"
+                android:gravity="start"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/fastText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_alignParentEnd="true"
+                android:text="@string/fast"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:gravity="end"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="RelativeOverlap" />
+        </RelativeLayout>
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/animationSpeedSlider"
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:valueFrom="1.0"
+            android:valueTo="10.0"
+            android:stepSize="1.0"
+            android:value="5"
+            app:tickColor="@color/colorPrimary"
+            app:trackColor="@color/colorSecondary"
+            app:trackHeight="10dp"
+            app:thumbColor="@color/colorHighlight"
+            app:labelBehavior="gone"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,24 +12,26 @@
         android:id="@+id/generatingText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/loadingText"
         android:gravity="center"
+        android:text="@string/loadingText"
         android:textColor="@color/colorPrimary"
         android:textSize="36sp"
         app:fontFamily="casual"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19" />
+        app:layout_constraintVertical_bias="0.069" />
 
     <ProgressBar
-        style="@android:style/Widget.ProgressBar.Horizontal"
         android:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="175dp"
-        app:layout_constraintTop_toBottomOf="@+id/generatingText" />
+        android:layout_marginTop="256dp"
+        app:layout_constraintTop_toBottomOf="@+id/generatingText"
+        tools:layout_editor_absoluteX="0dp" />
 
     <LinearLayout
         android:id="@+id/modeLayout"
@@ -47,34 +49,6 @@
             android:layout_height="wrap_content"
             android:text="@string/modeText"
             android:textSize="30sp" />
-
-        <LinearLayout
-            android:id="@+id/driverLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginVertical="10dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/progressBar">
-
-            <TextView
-                android:id="@+id/driverText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/driverText"
-                android:textColor="@color/colorPrimary"
-                android:textSize="24sp" />
-
-            <Spinner
-                android:id="@+id/driverSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
         <LinearLayout
             android:id="@+id/robotLayout"
             android:layout_width="wrap_content"
@@ -99,6 +73,33 @@
 
             <Spinner
                 android:id="@+id/robotSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/driverLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginVertical="10dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar">
+
+            <TextView
+                android:id="@+id/driverText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/driverText"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp" />
+
+            <Spinner
+                android:id="@+id/driverSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

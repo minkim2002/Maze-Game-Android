@@ -32,6 +32,22 @@
             android:name=".gui.GeneratingActivity"
             android:parentActivityName=".gui.AMazeActivity">
         </activity>
+        <activity
+            android:name=".gui.PlayManuallyActivity"
+            android:parentActivityName=".gui.AMazeActivity">
+        </activity>
+        <activity
+            android:name=".gui.PlayAnimationActivity"
+            android:parentActivityName=".gui.AMazeActivity">
+        </activity>
+        <activity
+            android:name=".gui.WinningActivity"
+            android:parentActivityName=".gui.AMazeActivity">
+        </activity>
+        <activity
+            android:name=".gui.LosingActivity"
+            android:parentActivityName=".gui.AMazeActivity">
+        </activity>
 
     </application>
 
