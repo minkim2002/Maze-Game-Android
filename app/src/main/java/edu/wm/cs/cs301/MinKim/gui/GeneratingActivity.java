@@ -112,6 +112,7 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable {
 
         // Progress
         int progress = 0;
+        View progressBar = findViewById(R.id.progressBar);
         while (progress < 100) {
             try {
                 Thread.sleep(1000);
@@ -121,6 +122,7 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable {
                 return;
             }
             progress += 10;
+            progressBar.getBackground().setLevel(progress);
         }
 
         //once the progress is done, play button becomes visible

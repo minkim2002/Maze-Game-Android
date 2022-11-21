@@ -14,9 +14,19 @@ import java.util.Locale;
 
 import edu.wm.cs.cs301.MinKim.R;
 
+/**
+ * @author Min Kim
+ * Class: FinalActivity
+ * Responsibilities: parent activity for two final activities (Winning, Losing)
+ * Collaborators: PlayManuallyActivity, PlayAnimationActivity, AMazeActivity,
+ */
 public class FinalActivity extends AppCompatActivity {
 
-    protected void setUpComponents(final Context context, final boolean winning) {
+    /**
+     * Set up the UI components with the information given by the intent
+     * @param context for components that need to be set up
+     */
+    protected void setComponents(final Context context, final boolean result) {
         Intent finalState = getIntent();
         Resources res = getResources();
 
@@ -39,12 +49,12 @@ public class FinalActivity extends AppCompatActivity {
         TextView shortestPath = findViewById(R.id.shortestPathText);
         shortestPath.setText(String.format(shortestPathString, finalState.getIntExtra("Shortest Path", 0)));
 
-        // create a listener for the button to navigate back to the AMazeActivity
+        // Listener for the button to go back to the AMazeActivity
         Button newMaze = findViewById(R.id.newMazeButton);
         newMaze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v(winning ? "Winning" : "Losing", "Returning to the Main Page");
+                Log.v(result ? "Winning" : "Losing", "Returning to the Main Page");
                 Intent toTitle = new Intent(context, AMazeActivity.class);
                 startActivity(toTitle);
                 finish();
