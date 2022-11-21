@@ -15,6 +15,12 @@ import androidx.appcompat.widget.PopupMenu;
 
 import edu.wm.cs.cs301.MinKim.R;
 
+/**
+ * @author Min Kim
+ * Class: PlayActivity
+ * Responsibilities: parent activity of two play activities (Manual, Animation)
+ * Collaborators: N/A
+ */
 public class PlayActivity extends AppCompatActivity {
 
     protected int zoom = 100;
@@ -25,28 +31,36 @@ public class PlayActivity extends AppCompatActivity {
     protected boolean showCorrectPath = false;
     protected boolean showWalls = false;
 
+    /**
+     * Set up listener for a menu button
+     * @param context activity in which the popUp will be generated
+     */
     protected void setMenu(final Context context) {
         ImageView menuButton = findViewById(R.id.menuButton);
         menuButton.setOnClickListener(v -> {
-
+            // create a menu according to the inputted context
             PopupMenu popup = new PopupMenu(context, v);
-
+            // Listener for the popup
             setPopup(context, popup);
-
-            MenuInflater inflater = popup.getMenuInflater();
-            inflater.inflate(R.menu.menu, popup.getMenu());
+            //Inflate it
+            MenuInflater inflate = popup.getMenuInflater();
+            inflate.inflate(R.menu.menu, popup.getMenu());
             popup.show();
-
+            //Update the menu
             Menu menu = popup.getMenu();
             menu.findItem(R.id.showMap).setChecked(showMap);
             menu.findItem(R.id.showWalls).setChecked(showWalls);
             menu.findItem(R.id.showCorrectPath).setChecked(showCorrectPath);
-
         });
     }
 
-    private void setPopup(final Context context, PopupMenu popup) {
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+    /**
+     * Set up listener for popup
+     * @param context context in which the popup will be created
+     * @param pop PopUpMenu object for listener
+     */
+    private void setPopup(final Context context, PopupMenu pop) {
+        pop.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Toast toast;
@@ -79,21 +93,28 @@ public class PlayActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Update the path length text on screen
+     */
     protected void setPathLength() {
-        Resources res = getResources();
-        String pathLengthString = res.getString(R.string.pathLengthText);
-        TextView pathLengthText = findViewById(R.id.pathLengthText);
-        pathLengthText.setText(String.format(pathLengthString, pathLength));
+        Resources resource = getResources();
+        String pathString = resource.getString(R.string.pathLengthText);
+        TextView pathText = findViewById(R.id.pathLengthText);
+        pathText.setText(String.format(pathString, pathLength));
     }
 
+    /**
+     * Set up listeners for zoom buttons
+     */
     protected void setZoom() {
-        ImageView zoomInButton = findViewById(R.id.zoomInButton);
-        zoomInButton.setOnClickListener(v -> {
+        ImageView in = findViewById(R.id.zoomInButton);
+        in.setOnClickListener(v -> {
             zoom += 3;
             Log.v("zoom", ""+zoom);
         });
-        ImageView zoomOutButton = findViewById(R.id.zoomOutButton);
-        zoomOutButton.setOnClickListener(v -> {
+        ImageView out = findViewById(R.id.zoomOutButton);
+        out.setOnClickListener(v -> {
             zoom -= 3;
             Log.v("zoom", ""+zoom);
         });

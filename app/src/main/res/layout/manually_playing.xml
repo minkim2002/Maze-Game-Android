@@ -6,7 +6,8 @@
     android:id="@+id/parentView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gui.PlayManuallyActivity">
+    tools:context=".gui.PlayManuallyActivity"
+    >
 
     <TextView
         android:id="@+id/pathLengthText"
@@ -72,6 +73,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/pathLengthText" />
 
+
     <ImageView
         android:id="@+id/forwardButton"
         android:contentDescription="@string/forwardButton"
@@ -131,6 +133,7 @@
         android:layout_marginBottom="20dp"
         android:contentDescription="@string/jumpButton"
         android:padding="15dp"
+        android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

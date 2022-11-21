@@ -18,7 +18,7 @@ import edu.wm.cs.cs301.MinKim.R;
  * @author Min Kim
  * Class: FinalActivity
  * Responsibilities: parent activity for two final activities (Winning, Losing)
- * Collaborators: PlayManuallyActivity, PlayAnimationActivity, AMazeActivity,
+ * Collaborators: PlayManuallyActivity, PlayAnimationActivity, AMazeActivity
  */
 public class FinalActivity extends AppCompatActivity {
 
