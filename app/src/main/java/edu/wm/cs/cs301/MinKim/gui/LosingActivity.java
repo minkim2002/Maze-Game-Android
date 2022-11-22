@@ -9,7 +9,7 @@ import edu.wm.cs.cs301.MinKim.R;
  * Class: LosingActivity
  * Responsibilities: displays the losing screen containing energy consumption and path length,
  * and navigate back to the main screen (title)
- * Collaborators: PlayManuallyActivity, PlayAnimationActivity, AMazeActivity,
+ * Collaborators: PlayManuallyActivity, PlayAnimationActivity, AMazeActivity
  */
 public class LosingActivity extends FinalActivity {
 

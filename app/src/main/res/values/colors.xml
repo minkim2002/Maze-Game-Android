@@ -4,4 +4,7 @@
     <color name="colorSecondary">#144016</color>
     <color name="colorHighlight">#CA3F56</color>
     <color name="colorGray">#7A7A7A</color>
+    <color name="colorTransparent">#68FFFFFF</color>
+    <color name="colorOperational">#2FFF00</color>
+    <color name="colorRepair">#FF0000</color>
 </resources>
