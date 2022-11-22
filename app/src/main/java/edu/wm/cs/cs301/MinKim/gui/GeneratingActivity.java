@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -77,6 +78,7 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable {
 
         //listener for the play button
         Button play = findViewById(R.id.playButton);
+
         play.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 //robot information
@@ -112,7 +114,7 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable {
 
         // Progress
         int progress = 0;
-        View progressBar = findViewById(R.id.progressBar);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
         while (progress < 100) {
             try {
                 Thread.sleep(1000);
@@ -121,14 +123,16 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable {
                 finish();
                 return;
             }
-            progress += 10;
-            progressBar.getBackground().setLevel(progress);
+            progress += 2;
+            progressBar.setProgress(progress);
+            progressBar.setMax(100);
         }
 
         //once the progress is done, play button becomes visible
         handler.post(new Runnable() {
             public void run() {
                 Button play = findViewById(R.id.playButton);
+
                 play.setVisibility(View.VISIBLE);
             }
         });

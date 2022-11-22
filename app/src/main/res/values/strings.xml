@@ -17,6 +17,7 @@
         <item>Boruvka</item>
     </string-array>
     <string-array name="driver">
+        <item>Please Select</item>
         <item>Manual</item>
         <item>Wizard</item>
         <item>Wall Follower</item>
