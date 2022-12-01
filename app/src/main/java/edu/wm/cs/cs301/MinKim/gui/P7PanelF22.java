@@ -1,40 +1,34 @@
 package edu.wm.cs.cs301.MinKim.gui;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-
-import androidx.annotation.Nullable;
-
-public class MazePanel extends View implements P7PanelF22 {
-    private Canvas canvas;
-    private Paint paint;
-    private Bitmap bitmap;
-
-    private int color;
-
-    public MazePanel(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        canvas = null;
-        paint = null;
-        bitmap = null;
-        update();
-    }
-
+/**
+ * Provides an adapter for a graphics object for the first person view
+ * and the map view to draw on.
+ * To its clients it offers the notion of an editor:
+ * one can clear it by adding the background,
+ * then put graphical entities to draw into it,
+ * and finally commit the complete drawing to the UI.
+ * The naming is technical as it is for Project 7
+ * and should serve as a specification for the MazePanel class.
+ *
+ * Note that methods for drawX in AWT have a corresponding
+ * method addX with same parameters here. The naming emphasizes
+ * that the P7Panel accumulates bits and pieces for an
+ * overall drawing that is then shown on the screen
+ * when the editor's content is complete and committed
+ * for drawing.
+ *
+ * The documentation includes guidance which AWT method is encapsulated
+ * or can be substituted by which interface method.
+ *
+ * @author Peter Kemper
+ *
+ */
+public interface P7PanelF22 {
     /**
      * Commits all accumulated drawings to the UI.
      * Substitute for MazePanel.update method.
      */
-    @Override
-    public void commit() {
-        update();
-    }
+    public void commit();
 
     /**
      * Tells if instance is able to draw. This ability depends on the
@@ -43,13 +37,7 @@ public class MazePanel extends View implements P7PanelF22 {
      * Substitute for code that checks if graphics object for drawing is not null.
      * @return true if drawing is possible, false if not.
      */
-    @Override
-    public boolean isOperational() {
-        if (null != getCanvas()) {
-            return true;
-        }
-        return false;
-    }
+    public boolean isOperational();
 
     /**
      * Sets the color for future drawing requests. The color setting
@@ -58,20 +46,14 @@ public class MazePanel extends View implements P7PanelF22 {
      * Substitute for Graphics.setColor method.
      * @param argb gives the alpha, red, green, and blue encoded value of the color
      */
-    @Override
-    public void setColor(int argb) {
-        color = argb;
-        paint.setColor(argb);
-    }
+    public void setColor(int argb);
 
     /**
      * Returns the ARGB value for the current color setting.
      * @return integer ARGB value
      */
-    @Override
-    public int getColor() {
-        return color;
-    }
+    public int getColor();
+
 
     /**
      * Draws two solid rectangles to provide a background.
@@ -82,13 +64,7 @@ public class MazePanel extends View implements P7PanelF22 {
      * Substitute for FirstPersonView.drawBackground method.
      * @param percentToExit gives the distance to exit
      */
-    @Override
-    public void addBackground(float percentToExit) {
-        setColor(Color.BLACK);
-        addFilledRectangle(0, 500, 1000, 1000);
-        setColor(Color.GRAY);
-        addFilledRectangle(0, 0, 1000, 500);
-    }
+    public void addBackground(float percentToExit);
 
     /**
      * Adds a filled rectangle.
@@ -101,10 +77,7 @@ public class MazePanel extends View implements P7PanelF22 {
      * @param width is the width of the rectangle
      * @param height is the height of the rectangle
      */
-    @Override
-    public void addFilledRectangle(int x, int y, int width, int height) {
-        canvas.drawRect(x, y, x+width, y+height, paint);
-    }
+    public void addFilledRectangle(int x, int y, int width, int height);
 
     /**
      * Adds a filled polygon.
@@ -120,10 +93,7 @@ public class MazePanel extends View implements P7PanelF22 {
      * @param yPoints are the y-coordinates of points for the polygon
      * @param nPoints is the number of points, the length of the arrays
      */
-    @Override
-    public void addFilledPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-        addPolygon(xPoints, yPoints, nPoints);
-    }
+    public void addFilledPolygon(int[] xPoints, int[] yPoints, int nPoints);
 
     /**
      * Adds a polygon.
@@ -140,16 +110,7 @@ public class MazePanel extends View implements P7PanelF22 {
      * @param yPoints are the y-coordinates of points for the polygon
      * @param nPoints is the number of points, the length of the arrays
      */
-    @Override
-    public void addPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-        Path polygonLine = new Path();
-        polygonLine.moveTo(xPoints[0], yPoints[0]);
-        for (int i = 1; i < nPoints; i++) {
-            polygonLine.lineTo(xPoints[i], yPoints[i]);
-        }
-        polygonLine.close();
-        canvas.drawPath(polygonLine, paint);
-    }
+    public void addPolygon(int[] xPoints, int[] yPoints, int nPoints);
 
     /**
      * Adds a line.
@@ -161,10 +122,7 @@ public class MazePanel extends View implements P7PanelF22 {
      * @param endX is the x-coordinate of the end point
      * @param endY is the y-coordinate of the end point
      */
-    @Override
-    public void addLine(int startX, int startY, int endX, int endY) {
-        canvas.drawLine(startX, startY, endX, endY, paint);
-    }
+    public void addLine(int startX, int startY, int endX, int endY);
 
     /**
      * Adds a filled oval.
@@ -178,11 +136,7 @@ public class MazePanel extends View implements P7PanelF22 {
      * @param width is the width of the oval
      * @param height is the height of the oval
      */
-    @Override
-    public void addFilledOval(int x, int y, int width, int height) {
-        canvas.drawOval(x, y, x+width, y+height, paint);
-    }
-
+    public void addFilledOval(int x, int y, int width, int height);
     /**
      * Adds the outline of a circular or elliptical arc covering the specified rectangle.
      * The resulting arc begins at startAngle and extends for arcAngle degrees,
@@ -208,11 +162,7 @@ public class MazePanel extends View implements P7PanelF22 {
      * @param startAngle the beginning angle.
      * @param arcAngle the angular extent of the arc, relative to the start angle.
      */
-    @Override
-    public void addArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-        canvas.drawArc(x, y, x+width, y+height, startAngle, arcAngle, true, paint);
-    }
-
+    public void addArc(int x, int y, int width, int height, int startAngle, int arcAngle) ;
     /**
      * Adds a string at the given position.
      * Substitute for CompassRose.drawMarker method
@@ -220,11 +170,12 @@ public class MazePanel extends View implements P7PanelF22 {
      * @param y the y coordinate
      * @param str the string
      */
-    @Override
-    public void addMarker(float x, float y, String str) {
-        canvas.drawText(str, x, y, paint);
-    }
-
+    public void addMarker(float x, float y, String str) ;
+    /**
+     * An enumerated type to match 1-1 the awt.RenderingHints used
+     * in CompassRose and MazePanel.
+     */
+    enum P7RenderingHints { KEY_RENDERING, VALUE_RENDER_QUALITY, KEY_ANTIALIASING, VALUE_ANTIALIAS_ON, KEY_INTERPOLATION, VALUE_INTERPOLATION_BILINEAR } ;
     /**
      * Sets the value of a single preference for the rendering algorithms.
      * It internally maps given parameter values into corresponding java.awt.RenderingHints
@@ -241,87 +192,5 @@ public class MazePanel extends View implements P7PanelF22 {
      * @param hintKey the key of the hint to be set.
      * @param hintValue the value indicating preferences for the specified hint category.
      */
-    @Override
-    public void setRenderingHint(P7RenderingHints hintKey, P7RenderingHints hintValue) {
-
-    }
-
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        Log.v("Drawing", "Drawing");
-        addBackground(0);
-        myTestImage(canvas);
-    }
-
-    /**
-     * @param c the canvas object
-     */
-    private void myTestImage(Canvas c) {
-        setColor(Color.RED);
-        addFilledOval(0, 0, 100, 100);
-        setColor(Color.GREEN);
-        addFilledOval(100, 0, 100, 100);
-        setColor(Color.YELLOW);
-        addFilledRectangle(0, 100, 100, 100);
-        setColor(Color.BLUE);
-        int[] xPoints = {100, 100, 150, 150, 200, 100};
-        int[] yPoints = {100, 150, 200, 200, 150, 200};
-        addFilledPolygon(xPoints, yPoints, 6);
-        addLine(0, 200, 100, 300);
-        update(c);
-    }
-
-    /**
-     * Get a graphics object that could be used for drawing.
-     */
-    public Canvas getCanvas() {
-        if (null == canvas) {
-            if (null == bitmap) {
-                bitmap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
-                if (null == bitmap) {
-                    Log.e("Error", "failed to create bitmap");
-                    return null;
-                }
-            }
-            canvas = new Canvas(bitmap);
-            paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        }
-        return canvas;
-    }
-
-    /**
-     * Draws the image to a given graphics object when the maze panel
-     * needs to redraw
-     */
-    public void paint(Canvas canvas) {
-        if (null == canvas) {
-            Log.e("paint", "No canvas object to draw on");
-        }
-        else {
-            canvas.drawBitmap(bitmap, 0, 0, paint);
-        }
-    }
-
-    /**
-     * Draws the image on a canvas object
-     */
-    public void update(Canvas canvas) {
-        paint(canvas);
-    }
-
-    /**
-     * Draws the image on a graphics object
-     */
-    public void update() {
-        paint(getCanvas());
-    }
-
+    public void setRenderingHint(P7RenderingHints hintKey, P7RenderingHints hintValue);
 }
-
-
-

@@ -139,7 +139,7 @@
         app:layout_constraintTop_toTopOf="@id/parentView"
         >
 
-        <edu.wm.cs.cs301.MinKim.gui.MazePanelAnimating
+        <edu.wm.cs.cs301.MinKim.gui.MazePanel
             android:layout_width="match_parent"
             android:layout_height="400dp" />
     </LinearLayout>

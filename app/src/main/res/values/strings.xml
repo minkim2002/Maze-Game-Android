@@ -12,7 +12,7 @@
     <string name="loadingText">Building the Walls…</string>
     <string name="playText">Begin Maze</string>
     <string-array name="builder">
-        <item>Random</item>
+        <item>DFS</item>
         <item>Prim</item>
         <item>Boruvka</item>
     </string-array>
