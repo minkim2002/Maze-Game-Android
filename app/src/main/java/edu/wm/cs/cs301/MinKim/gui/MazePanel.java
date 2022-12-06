@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,10 @@ public class MazePanel extends View implements P7PanelF22 {
     private Bitmap bitmap;
 
     private int color;
+    private Typeface font;
+
+    private int width;
+    private int height;
 
     public MazePanel(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -71,6 +76,22 @@ public class MazePanel extends View implements P7PanelF22 {
     @Override
     public int getColor() {
         return color;
+    }
+
+    /**
+     * Set the font
+     * @param fontString name
+     */
+    public void setFont(String fontString) {
+        font = Typeface.create(fontString, Typeface.NORMAL);
+        paint.setTypeface(Typeface.create(fontString, Typeface.NORMAL));
+    }
+
+    /**
+     * Get the font
+     */
+    public Typeface getFont() {
+        return font;
     }
 
     /**
@@ -319,6 +340,14 @@ public class MazePanel extends View implements P7PanelF22 {
      */
     public void update() {
         paint(getCanvas());
+    }
+
+    /**
+     * Set the first person dimensions for the FirstPersonView
+     */
+    public void setDimensions(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
 }
