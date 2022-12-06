@@ -24,6 +24,9 @@ package edu.wm.cs.cs301.MinKim.gui;
  *
  */
 public interface P7PanelF22 {
+
+    static final int RGB_DEF = 20;
+    static final int RGB_DEF_GREEN = 10;
     /**
      * Commits all accumulated drawings to the UI.
      * Substitute for MazePanel.update method.
@@ -53,6 +56,62 @@ public interface P7PanelF22 {
      * @return integer ARGB value
      */
     public int getColor();
+
+    /**
+     * Determine the color for this wall.
+     *
+     * @param distance
+     *            to exit
+     * @param cc
+     *            obscure
+     */
+    static int getWallColor(int distance, int cc, int extensionX) {
+        final int d = distance / 4;
+        // mod used to limit the number of colors to 6
+        final int rgbValue = calculateRGBValue(d, extensionX);
+        //System.out.println("Initcolor rgb: " + rgbValue);
+        String hex;
+        switch (((d >> 3) ^ cc) % 6) {
+            case 0:
+                hex = String.format("%02X%02X%02X", rgbValue, RGB_DEF, RGB_DEF);
+                return Integer.parseInt(hex,16);
+            case 1:
+                hex = String.format("%02X%02X%02X", RGB_DEF, RGB_DEF_GREEN, RGB_DEF);
+                return Integer.parseInt(hex,16);
+            case 2:
+                hex = String.format("%02X%02X%02X", RGB_DEF, RGB_DEF, rgbValue);
+                return Integer.parseInt(hex,16);
+            case 3:
+                hex = String.format("%02X%02X%02X", rgbValue, RGB_DEF_GREEN, RGB_DEF);
+                return Integer.parseInt(hex,16);
+            case 4:
+                hex = String.format("%02X%02X%02X", RGB_DEF, RGB_DEF_GREEN, rgbValue);
+                return Integer.parseInt(hex,16);
+            case 5:
+                hex = String.format("%02X%02X%02X", rgbValue, RGB_DEF, rgbValue);
+                return Integer.parseInt(hex,16);
+            default:
+                hex = String.format("%02X%02X%02X", RGB_DEF, RGB_DEF, RGB_DEF);
+                return Integer.parseInt(hex,16);
+        }
+    }
+
+    /**
+     * Computes an RGB value based on the given numerical value.
+     *
+     * @param distance
+     *            value to select color
+     * @return the calculated RGB value
+     */
+    static int calculateRGBValue(final int distance, final int extensionX) {
+        // compute rgb value, depends on distance and x direction
+        // 7 in binary is 0...0111
+        // use AND to get last 3 digits of distance
+        final int part1 = distance & 7;
+        final int add = (extensionX != 0) ? 1 : 0;
+        final int rgbValue = ((part1 + 2 + add) * 70) / 8 + 80;
+        return rgbValue;
+    }
 
 
     /**

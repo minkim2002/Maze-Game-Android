@@ -85,6 +85,20 @@ public class AMazeActivity extends AppCompatActivity {
     }
 
     /**
+     * Set the settings to default values when this activity is in background
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Spinner builderSpinner = findViewById(R.id.builderSpinner);
+        builderSpinner.setSelection(0);
+        SeekBar skillLevelSeekBar = findViewById(R.id.difficultySeekBar);
+        skillLevelSeekBar.setProgress(0);
+        SwitchMaterial roomSwitch = findViewById(R.id.roomSwitch);
+        roomSwitch.setChecked(false);
+    }
+
+    /**
      * After the maze is generated, the generating activity returns the user inputted driver
      * and robot if inputted. Then, the game starts based on the information received
      * @param result returned information from the maze generation
@@ -95,7 +109,7 @@ public class AMazeActivity extends AppCompatActivity {
             //check the code
             if (result.getResultCode() == Activity.RESULT_OK) {
                 Bundle maze = result.getData().getExtras();
-                assert(maze != null) : "Error: maze configuration is not supposed to be null";
+                assert(maze != null) : "maze configuration is not supposed to be null";
 
                 //Configure the driver and robot bases on the information received
                 String driverString = Objects.requireNonNull(maze.get("Driver")).toString();

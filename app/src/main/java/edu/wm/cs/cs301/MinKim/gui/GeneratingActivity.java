@@ -16,6 +16,11 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import edu.wm.cs.cs301.MinKim.R;
+import edu.wm.cs.cs301.MinKim.generation.Factory;
+import edu.wm.cs.cs301.MinKim.generation.Maze;
+import edu.wm.cs.cs301.MinKim.generation.MazeFactory;
+import edu.wm.cs.cs301.MinKim.generation.MazeSingleton;
+import edu.wm.cs.cs301.MinKim.generation.Order;
 
 /**
  * @author Min Kim
@@ -25,10 +30,20 @@ import edu.wm.cs.cs301.MinKim.R;
  * Collaborators: AMazeActivity
  */
 
-public class GeneratingActivity extends AppCompatActivity implements Runnable {
+public class GeneratingActivity extends AppCompatActivity implements Runnable, Order {
 
     protected Thread generating;
     private Handler handler;
+
+    private Factory factory;
+    private Order.Builder builder;
+
+    private int skillLevel;
+    private int seed;
+    private int progress;
+
+    private boolean gameStart;
+    private boolean isPerfect;
 
     /**
      * Start the maze generation process thread,
@@ -40,6 +55,7 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.generating);
+        defaultState();
 
         // start the thread for generation
         handler = new Handler(Looper.getMainLooper());
@@ -108,31 +124,29 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable {
     public void run() {
         //Get the intent sent from the AMazeActivity
         Intent intent = getIntent();
-        Log.v("Difficulty Level", ""+intent.getIntExtra("Difficulty Level", 0));
-        Log.v("Builder", ""+intent.getStringExtra("Builder"));
-        Log.v("Room", ""+intent.getBooleanExtra("Room", true));
-
-        // Progress
-        int progress = 0;
-        ProgressBar progressBar = findViewById(R.id.progressBar);
-        while (progress < 100) {
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-                setResult(RESULT_CANCELED, null);
-                finish();
-                return;
-            }
-            progress += 2;
-            progressBar.setProgress(progress);
-            progressBar.setMax(100);
+        skillLevel = intent.getIntExtra("Difficulty Level", 0);
+        Log.v("SkillLevel", ""+ skillLevel);
+        isPerfect = !intent.getBooleanExtra("Room", false);
+        Log.v("Room", ""+ !isPerfect);
+        if(intent.getStringExtra("Builder").equals("DFS")){
+            builder = Order.Builder.DFS;
         }
+        if(intent.getStringExtra("Builder").equals("Prim")){
+            builder = Order.Builder.Prim;
+        }
+        if(intent.getStringExtra("Builder").equals("Boruvka")){
+            builder = Order.Builder.Prim;
+        }
+        Log.v("Builder", ""+ builder);
+        factory.order((Order) this);
+        factory.waitTillDelivered();
 
-        //once the progress is done, play button becomes visible
         handler.post(new Runnable() {
             public void run() {
+                assert(MazeSingleton.getMazeSingleton().getMaze()!=null):
+                        "Maze Generation failed";
+                Log.v("Generation", "Maze ready");
                 Button play = findViewById(R.id.playButton);
-
                 play.setVisibility(View.VISIBLE);
             }
         });
@@ -151,4 +165,51 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable {
         GeneratingActivity.this.setResult(RESULT_CANCELED, new Intent(GeneratingActivity.this, AMazeActivity.class));
         GeneratingActivity.this.finish();
     }
+
+    private void defaultState(){
+        factory = new MazeFactory();
+        skillLevel = 0;
+        builder = Order.Builder.DFS;
+        progress = 0;
+        seed = 2;
+        isPerfect = false;
+        gameStart = false;
+
+    }
+
+    @Override
+    public int getSkillLevel() {
+        return skillLevel;
+    }
+
+    @Override
+    public Builder getBuilder() {
+        return builder;
+    }
+
+    @Override
+    public boolean isPerfect() {
+        return isPerfect;
+    }
+
+    @Override
+    public int getSeed() {
+        return seed;
+    }
+
+    @Override
+    public void deliver(Maze mazeConfig) {
+        MazeSingleton.getMazeSingleton().setMaze(mazeConfig);
+    }
+
+    @Override
+    public void updateProgress(int percentage) {
+        if (percentage <= 100 && progress < percentage) {
+            progress = percentage;
+            ProgressBar progressBar = findViewById(R.id.progressBar);
+            progressBar.setProgress(progress);
+            progressBar.setMax(100);
+        }
+    }
+
 }
