@@ -16,6 +16,7 @@
         android:layout_marginTop="150dp"
         android:paddingVertical="15dp"
         android:text="@string/losingText"
+        android:background="@color/colorBlack"
         android:fontFamily="casual"
         android:textSize="36sp"
         android:textColor="@color/colorPrimary"
@@ -27,6 +28,7 @@
     <TextView
         android:id="@+id/shortestPathText"
         android:layout_width="wrap_content"
+        android:background="@color/colorBlack"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/shortestPathText"
@@ -40,6 +42,7 @@
     <TextView
         android:id="@+id/pathLengthText"
         android:layout_width="wrap_content"
+        android:background="@color/colorBlack"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="@string/pathLengthText"
@@ -75,7 +78,7 @@
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:backgroundTint="@color/colorHighlight"
+        android:backgroundTint="@color/colorSecondary"
         app:layout_constraintTop_toBottomOf="@id/energyConsumptionText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

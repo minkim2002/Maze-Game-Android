@@ -104,14 +104,19 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
                 String driverString = driver.getSelectedItem().toString();
 
                 //Intent with robot and driver information
-                Intent result = new Intent(GeneratingActivity.this, AMazeActivity.class);
-                result.putExtra("Driver", driverString);
-                result.putExtra("Robot", robotString);
-                result.putExtra("Seed", seed);
+                if(!driverString.equals("Please Select")){
+                    Intent result = new Intent(GeneratingActivity.this, AMazeActivity.class);
+                    result.putExtra("Driver", driverString);
+                    result.putExtra("Robot", robotString);
+                    result.putExtra("Seed", seed);
 
-                // send the result back to the AMazeActivity
-                GeneratingActivity.this.setResult(RESULT_OK, result);
-                GeneratingActivity.this.finish();
+                    // send the result back to the AMazeActivity
+                    GeneratingActivity.this.setResult(RESULT_OK, result);
+                    GeneratingActivity.this.finish();
+                }
+                else{
+                    Log.v("Driver Selection", "Please Select the driver");
+                }
             }
         });
     }
