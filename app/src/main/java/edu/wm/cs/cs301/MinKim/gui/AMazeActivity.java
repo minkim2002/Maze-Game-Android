@@ -2,6 +2,7 @@ package edu.wm.cs.cs301.MinKim.gui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,9 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
-import java.util.Objects;
-
 import edu.wm.cs.cs301.MinKim.R;
+import edu.wm.cs.cs301.MinKim.generation.SingleRandom;
 
 /**
  * @author Min Kim
@@ -32,6 +32,15 @@ import edu.wm.cs.cs301.MinKim.R;
  */
 public class AMazeActivity extends AppCompatActivity {
 
+    private SharedPreferences mazePreference;
+
+    private String builder;
+
+    private int skillLevel;
+    private int seed;
+
+    private boolean room;
+
     /**
      * Create the builder spinner with various builder options,
      * set up the navigating buttons which will generate the maze.
@@ -41,6 +50,7 @@ public class AMazeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title);
+        mazePreference = getPreferences(Activity.MODE_PRIVATE);
         Log.v("Launching Maze App", "Successful");
 
         //Builder spinner with various builder options
@@ -49,15 +59,15 @@ public class AMazeActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         builder.setAdapter(adapter);
         // Listeners for the buttons that will generate the maze
-        setGeneration((Button) findViewById(R.id.revisitButton));
-        setGeneration((Button) findViewById(R.id.exploreButton));
+        setGeneration((Button) findViewById(R.id.revisitButton), true);
+        setGeneration((Button) findViewById(R.id.exploreButton), false);
     }
 
     /**
      * Configure the listeners for the buttons that will generate the maze
      * @param button the button the listener resides in
      */
-    public void setGeneration(Button button) {
+    public void setGeneration(Button button, boolean visit) {
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
                 // receive the selected builder
@@ -66,6 +76,12 @@ public class AMazeActivity extends AppCompatActivity {
                 // receive the selected level
                 SeekBar difficultyLevel = findViewById(R.id.difficultySeekBar);
                 int lv = difficultyLevel.getProgress();
+                //In case of revisiting, receive the seed
+                if(visit){
+                    seed = mazePreference.getInt(skillLevel+", "+builder+", "+room, 2);
+                }else{
+                    seed = SingleRandom.getRandom().nextInt();
+                }
                 //receive the information about the presence of rooms
                 SwitchMaterial room = findViewById(R.id.roomSwitch);
                 boolean isRoom = room.isChecked();
@@ -112,10 +128,17 @@ public class AMazeActivity extends AppCompatActivity {
                 assert(maze != null) : "maze configuration is not supposed to be null";
 
                 //Configure the driver and robot bases on the information received
-                String driverString = Objects.requireNonNull(maze.get("Driver")).toString();
-                String robotString = Objects.requireNonNull(maze.get("Robot")).toString();
+                String driverString = maze.getString("Driver");
                 Log.v("Driver Chosen", driverString);
+                String robotString = maze.getString("Robot");
                 Log.v("Robot Chosen", robotString);
+                int seed = maze.getInt("Seed");
+                Log.v("Seed", ""+ seed);
+
+                // save maze settings to shared preferences
+                SharedPreferences.Editor editor = mazePreference.edit();
+                editor.putInt(skillLevel+", "+builder+", "+ room, seed);
+                editor.apply();
 
                 //Game intent with given information
                 Intent game = new Intent(AMazeActivity.this,

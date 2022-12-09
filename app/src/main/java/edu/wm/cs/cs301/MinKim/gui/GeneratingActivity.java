@@ -78,17 +78,15 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
         driver.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 LinearLayout robot = findViewById(R.id.robotLayout);
-                if(!parent.getItemAtPosition(position).toString().equals("Wall Follower") &&
-                        !parent.getItemAtPosition(position).toString().equals("Wizard"))
-                    robot.setVisibility(View.INVISIBLE);
-                else robot.setVisibility(View.VISIBLE);
+                if(parent.getItemAtPosition(position).toString().equals("Wall Follower"))
+                    robot.setVisibility(View.VISIBLE);
+                else robot.setVisibility(View.INVISIBLE);
             }
             public void onNothingSelected(AdapterView<?> parent) {
                 LinearLayout robot = findViewById(R.id.robotLayout);
-                if(!parent.getSelectedItem().toString().equals("Wall Follower") &&
-                        !parent.getSelectedItem().toString().equals("Wizard"))
-                    robot.setVisibility(View.INVISIBLE);
-                else robot.setVisibility(View.VISIBLE);
+                if(parent.getSelectedItem().toString().equals("Wall Follower"))
+                    robot.setVisibility(View.VISIBLE);
+                else robot.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -109,6 +107,7 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
                 Intent result = new Intent(GeneratingActivity.this, AMazeActivity.class);
                 result.putExtra("Driver", driverString);
                 result.putExtra("Robot", robotString);
+                result.putExtra("Seed", seed);
 
                 // send the result back to the AMazeActivity
                 GeneratingActivity.this.setResult(RESULT_OK, result);
@@ -127,6 +126,8 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
         skillLevel = intent.getIntExtra("Difficulty Level", 0);
         Log.v("SkillLevel", ""+ skillLevel);
         isPerfect = !intent.getBooleanExtra("Room", false);
+        seed = intent.getIntExtra("Seed", 0);
+        Log.v("Seed", ""+seed);
         Log.v("Room", ""+ !isPerfect);
         if(intent.getStringExtra("Builder").equals("DFS")){
             builder = Builder.DFS;
