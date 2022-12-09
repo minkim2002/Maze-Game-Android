@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
 import edu.wm.cs.cs301.MinKim.R;
+import edu.wm.cs.cs301.MinKim.generation.Maze;
 
 /**
  * @author Min Kim
@@ -26,7 +27,7 @@ public class PlayActivity extends AppCompatActivity {
 
     protected MediaPlayer playSong;
 
-    protected int shortestPath = 10;
+    protected int shortestPath;
 
     protected boolean showMap = false;
     protected boolean showCorrectPath = false;
@@ -38,8 +39,15 @@ public class PlayActivity extends AppCompatActivity {
 
     protected RobotDriver driver = null;
 
-    public void switchToWinning(Context context, int distance) {
-        stateWinning = new Intent(context, WinningActivity.class);
+    /**
+     * Intent for final state
+     * @param context for the intent
+     * @param result whether maze was solved or not
+     * @param distance total distance traveled
+     */
+    public void switchToWinning(Context context, int distance, boolean result) {
+        stateWinning = result ? new Intent(context, WinningActivity.class):
+            new Intent(context, LosingActivity.class);
         Log.v("Distance Traveled", ""+distance);
         stateWinning.putExtra("Path Length", distance);
         stateWinning.putExtra("Shortest Path", shortestPath);
@@ -47,7 +55,7 @@ public class PlayActivity extends AppCompatActivity {
 
     /**
      * Set up listener for a menu button
-     * @param context activity in which the popUp will be generated
+     * @param context activity for popup
      */
     protected void setMenu(final Context context) {
         ImageView menuButton = findViewById(R.id.menuButton);
@@ -116,10 +124,6 @@ public class PlayActivity extends AppCompatActivity {
         pathText.setText(String.format(pathString, pathLength));
     }
 
-    public RobotDriver getDriver() {
-        return driver;
-    }
-
     /**
      * Set up listeners for zoom buttons
      */
@@ -136,5 +140,14 @@ public class PlayActivity extends AppCompatActivity {
             statePlaying.handleUserInput(Constants.UserInput.ZOOMOUT, 0);
             Log.v("zoom", ""+zoom);
         });
+    }
+
+    /**
+     * Get the shortest path to solve the given maze
+     * @param maze the current maze
+     */
+    protected void getShortestPath(Maze maze) {
+        int[] startingPositionPos = maze.getStartingPosition();
+        shortestPath = maze.getDistanceToExit(startingPositionPos[0], startingPositionPos[1]);
     }
 }

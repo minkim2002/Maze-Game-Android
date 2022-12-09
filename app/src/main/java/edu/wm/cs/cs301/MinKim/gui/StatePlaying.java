@@ -180,7 +180,7 @@ public class StatePlaying implements State {
 			walk(1);
 			// check termination, did we leave the maze?
 			if (isOutside(px, py)) {
-				play.switchToWinning(play, distTraveled);
+				play.switchToWinning(play, distTraveled, true);
 			}
 			break;
 		case LEFT: // turn left
@@ -193,7 +193,6 @@ public class StatePlaying implements State {
 			walk(-1);
 			// check termination, did we leave the maze?
 			if (isOutside(px, py)) {
-				play.switchToWinning(play, distTraveled);
 			}
 			break;
 		case RETURNTOTITLE: // escape to title screen

@@ -2,11 +2,15 @@ package edu.wm.cs.cs301.MinKim.gui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -14,10 +18,15 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import edu.wm.cs.cs301.MinKim.R;
+
 public class MazePanel extends View implements P7PanelF22 {
     private Canvas canvas;
     private Paint paint;
     private Bitmap bitmap;
+    static BitmapShader wallShader;
+    static BitmapShader backgroundTopShader;
+    static BitmapShader backgroundBottomShader;
 
     private int color;
     private Typeface font;
@@ -37,6 +46,12 @@ public class MazePanel extends View implements P7PanelF22 {
         bitmap = Bitmap.createBitmap(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(bitmap);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        Bitmap wall = BitmapFactory.decodeResource(context.getResources(), R.drawable.wall_background);
+        wallShader = new BitmapShader(wall, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR);
+        Bitmap backgroundTop = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_top);
+        backgroundTopShader = new BitmapShader(backgroundTop, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR);
+        Bitmap backgroundBottom = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
+        backgroundBottomShader = new BitmapShader(backgroundBottom, Shader.TileMode.MIRROR, Shader.TileMode.MIRROR);
     }
 
     /**
@@ -112,10 +127,22 @@ public class MazePanel extends View implements P7PanelF22 {
      */
     @Override
     public void addBackground(float percentToExit) {
-        setColor(getBackgroundColor(percentToExit, true));
-        addFilledRectangle(0, 0, width, height/2);
-        setColor(getBackgroundColor(percentToExit, false));
+        Matrix shaderTopMatrix = new Matrix();
+        float[] topPoints = {0, 0, width, height/2};
+        shaderTopMatrix.mapPoints(topPoints);
+        backgroundTopShader.setLocalMatrix(shaderTopMatrix);
+        paint.setShader(backgroundTopShader);
+        addFilledRectangle(0,0,width,height/2);
+        paint.setShader(null);
+        //setColor(getBackgroundColor(percentToExit, true));
+        //addFilledRectangle(0, 0, width, height/2);
+        Matrix shaderBottomMatrix = new Matrix();
+        float[] botPoints = {0, (float)(height/2), width, (float)(height/2)};
+        shaderBottomMatrix.mapPoints(botPoints);
+        backgroundBottomShader.setLocalMatrix(shaderBottomMatrix);
+        paint.setShader(backgroundBottomShader);
         addFilledRectangle(0, height/2, width, height/2);
+        paint.setShader(null);
     }
 
     /**
@@ -186,7 +213,7 @@ public class MazePanel extends View implements P7PanelF22 {
      */
     @Override
     public void addFilledPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-        addPolygon(xPoints, yPoints, nPoints);
+        //addPolygon(xPoints, yPoints, nPoints);
     }
 
     /**
@@ -207,6 +234,7 @@ public class MazePanel extends View implements P7PanelF22 {
     @Override
     public void addPolygon(int[] xPoints, int[] yPoints, int nPoints) {
         Path polygonLine = new Path();
+        paint.setStrokeWidth(5);
         polygonLine.moveTo(xPoints[0], yPoints[0]);
         for (int i = 1; i < nPoints; i++) {
             polygonLine.lineTo(xPoints[i], yPoints[i]);
@@ -293,7 +321,7 @@ public class MazePanel extends View implements P7PanelF22 {
         x -= rect.width() / 2.0;
         y += rect.height() / 2.0;
 
-        paint.setTextSize(75);
+        paint.setTextSize(50);
         canvas.drawText(str, x, y, paint);
     }
 
@@ -363,6 +391,34 @@ public class MazePanel extends View implements P7PanelF22 {
     public void setDimensions(int width, int height) {
         this.width = width;
         this.height = height;
+    }
+
+    /**
+     * Adds a customized wall.
+     * @param xPoints x-coordinates of points of the wall
+     * @param yPoints y-coordinates of points of the wall
+     * @param nPoints number of points
+     */
+    public void addWall(int[] xPoints, int[] yPoints, int nPoints) {
+        Path polygonPath = new Path();
+        paint.setStrokeWidth(8);
+        // matrix of shader
+        Matrix shaderMatrix = new Matrix();
+        float[] coordinates = new float[nPoints + 1];
+        for (int i = 0; i < nPoints; i++) {
+            coordinates[i] = xPoints[i];
+            coordinates[i+1] = yPoints[i];
+        }
+        shaderMatrix.mapPoints(coordinates);
+        wallShader.setLocalMatrix(shaderMatrix);
+        paint.setShader(wallShader);
+        polygonPath.moveTo(xPoints[0], yPoints[0]);
+        for (int i = 1; i < nPoints; i++) {
+            polygonPath.lineTo(xPoints[i], yPoints[i]);
+        }
+        polygonPath.close();
+        canvas.drawPath(polygonPath, paint);
+        paint.setShader(null);
     }
 
 }

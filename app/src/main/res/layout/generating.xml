@@ -104,10 +104,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/robotText"
                 android:textColor="@color/colorPrimary"
+                android:background="@color/colorBlack"
                 android:textSize="24sp" />
 
             <Spinner
                 android:id="@+id/robotSpinner"
+                android:background="@color/colorBlack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

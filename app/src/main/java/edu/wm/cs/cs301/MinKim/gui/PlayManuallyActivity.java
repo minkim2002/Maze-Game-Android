@@ -46,8 +46,8 @@ public class PlayManuallyActivity extends PlayActivity {
     }
 
     @Override
-    public void switchToWinning(Context context, int distance) {
-        super.switchToWinning(context, distance);
+    public void switchToWinning(Context context, int distance, boolean result) {
+        super.switchToWinning(context, distance, true);
         // Intent with an information about the game mode, the path length, and the shortest path
         stateWinning.putExtra("Manual", true);
         Log.v("Play Manual End", "Proceed to WinningActivity");

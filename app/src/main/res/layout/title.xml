@@ -109,6 +109,7 @@
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/roomSwitch"
+            android:background="@color/colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

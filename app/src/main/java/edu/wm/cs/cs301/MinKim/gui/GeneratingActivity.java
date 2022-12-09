@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -115,7 +116,8 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
                     GeneratingActivity.this.finish();
                 }
                 else{
-                    Log.v("Driver Selection", "Please Select the driver");
+                    Toast toast = Toast.makeText(GeneratingActivity.this, "Please Select", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         });
@@ -159,8 +161,8 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
     }
 
     /**
-     * If the player presses the back button, the generating thread is interrupted and the title
-     * activity is notified.
+     * The generating thread is interrupted and the title
+     * activity is notified if the back button is pressed.
      */
     @Override
     public void onBackPressed() {
@@ -172,21 +174,32 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
         GeneratingActivity.this.finish();
     }
 
+    /**
+     * Reset the configuration once the activity is destroyed
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        defaultState();
+    }
+
+    /**
+     * Reset all the basic configuration to the default values
+     */
     private void defaultState(){
         factory = new MazeFactory();
-        skillLevel = 0;
         builder = Order.Builder.DFS;
+        skillLevel = 0;
         progress = 0;
         seed = 2;
         isPerfect = false;
         gameStart = false;
     }
 
-    @Override
-    public void deliver(Maze mazeConfig) {
-        MazeSingleton.getMazeSingleton().setMaze(mazeConfig);
-    }
-
+    /**
+     * link the maze generation process with progress bar
+     * @param percentage of generation process
+     */
     @Override
     public void updateProgress(int percentage) {
         if (percentage <= 100 && progress < percentage) {
@@ -197,30 +210,45 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
         }
     }
 
+    /**
+     * deliver the maze
+     * @param mazeConfig is the maze that is delivered in response to an order
+     */
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        defaultState();
+    public void deliver(Maze mazeConfig) {
+        MazeSingleton.getMazeSingleton().setMaze(mazeConfig);
     }
 
-    @Override
-    public int getSkillLevel() {
-        return skillLevel;
-    }
-
+    /**
+     * Get the builder
+     */
     @Override
     public Builder getBuilder() {
         return builder;
     }
 
+    /**
+     * Get the skill level
+     */
     @Override
-    public boolean isPerfect() {
-        return isPerfect;
+    public int getSkillLevel() {
+        return skillLevel;
     }
 
+    /**
+     * Get the seed
+     */
     @Override
     public int getSeed() {
         return seed;
+    }
+
+    /**
+     * Get the information about whether the maze is perfect or not
+     */
+    @Override
+    public boolean isPerfect() {
+        return isPerfect;
     }
 
 }

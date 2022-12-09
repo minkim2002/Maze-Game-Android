@@ -502,7 +502,7 @@ public class FirstPersonView {
 			// debug
 			//dbg("polygon-x: " + xps[0] + ", " + xps[1] + ", " + xps[2] + ", " + xps[3]) ;
 			//dbg("polygon-y: " + yps[0] + ", " + yps[1] + ", " + yps[2] + ", " + yps[3]) ;
-			mazePanel.addFilledPolygon(xps, yps, 4);
+			mazePanel.addWall(xps, yps, 4);
 			// for debugging purposes, code will draw a red line around polygon
 			// this makes individual walls visible
 			/*

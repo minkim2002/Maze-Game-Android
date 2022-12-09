@@ -30,6 +30,7 @@ import edu.wm.cs.cs301.MinKim.generation.MazeSingleton;
  */
 public class PlayAnimationActivity extends PlayActivity {
     private boolean auto = true;
+    protected boolean showMap = true;
     private double autoSpeed = 1000;
     private float startingEnergyLevel;
     final private int MEAN_TIME_BETWEEN_FAILURES=4000;
@@ -69,6 +70,8 @@ public class PlayAnimationActivity extends PlayActivity {
 
         setComponents();
         setAnimation();
+
+
         setPathLength(this.driver.getPathLength());
     }
 
