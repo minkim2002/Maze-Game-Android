@@ -33,6 +33,8 @@ public class PlayActivity extends AppCompatActivity {
     protected StatePlaying statePlaying;
     protected Intent stateWinning;
 
+    protected RobotDriver driver = null;
+
     public void switchToWinning(Context context, int distance) {
         stateWinning = new Intent(context, WinningActivity.class);
         Log.v("Distance Traveled", ""+distance);
@@ -104,11 +106,15 @@ public class PlayActivity extends AppCompatActivity {
     /**
      * Update the path length text on screen
      */
-    protected void setPathLength() {
+    protected void setPathLength(int pathLength) {
         Resources resource = getResources();
         String pathString = resource.getString(R.string.pathLengthText);
         TextView pathText = findViewById(R.id.pathLengthText);
-        pathText.setText(String.format(pathString, statePlaying.distTraveled));
+        pathText.setText(String.format(pathString, pathLength));
+    }
+
+    public RobotDriver getDriver() {
+        return driver;
     }
 
     /**

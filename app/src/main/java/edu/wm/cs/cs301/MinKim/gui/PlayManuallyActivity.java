@@ -35,7 +35,7 @@ public class PlayManuallyActivity extends PlayActivity {
         statePlaying.setMaze(MazeSingleton.getMazeSingleton().getMaze());
         statePlaying.start(this, findViewById(R.id.mazePanel));
         setButtons();
-        setPathLength();
+        setPathLength(statePlaying.distTraveled);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class PlayManuallyActivity extends PlayActivity {
                 statePlaying.handleUserInput(move, 0);
                 // update the path length
                 if (statePlaying.distTraveled > currentDist) {
-                    setPathLength();
+                    setPathLength(statePlaying.distTraveled);
                 }
             });
         } else {
