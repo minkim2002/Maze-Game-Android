@@ -2,6 +2,7 @@ package edu.wm.cs.cs301.MinKim.gui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -46,6 +47,12 @@ public class PlayAnimationActivity extends PlayActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.animation_playing);
+        playSong = MediaPlayer.create(PlayAnimationActivity.this, R.raw.title_music);
+        playSong.start();
+        if(!playSong.isPlaying()){
+            playSong.reset();
+            playSong.start();
+        }
         //Get the intent to check whether the information is sent
         Intent play = getIntent();
         Log.v("Maze", Objects.requireNonNull(play.getStringExtra("Maze")));
@@ -159,6 +166,8 @@ public class PlayAnimationActivity extends PlayActivity {
         Toast toast = Toast.makeText(PlayAnimationActivity.this,
                 result ? "Maze Solved" : "Maze Unsolved", Toast.LENGTH_SHORT);
         toast.show();
+        playSong.pause();
+        playSong.reset();
         startActivity(endScreen);
         finish();
     }

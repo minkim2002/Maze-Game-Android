@@ -3,6 +3,7 @@ package edu.wm.cs.cs301.MinKim.gui;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,7 @@ import edu.wm.cs.cs301.MinKim.generation.SingleRandom;
 public class AMazeActivity extends AppCompatActivity {
 
     private SharedPreferences mazePreference;
+    private MediaPlayer titleSong;
 
     private String builder;
 
@@ -51,6 +53,8 @@ public class AMazeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.title);
         mazePreference = getPreferences(Activity.MODE_PRIVATE);
+        titleSong = MediaPlayer.create(AMazeActivity.this, R.raw.title_music);
+        titleSong.start();
         Log.v("Launching Maze App", "Successful");
 
         //Builder spinner with various builder options
@@ -95,6 +99,8 @@ public class AMazeActivity extends AppCompatActivity {
                 //Toast as a notification about the new activity
                 Toast toast = Toast.makeText(AMazeActivity.this, "Generating maze", Toast.LENGTH_SHORT);
                 toast.show();
+                titleSong.pause();
+                titleSong.reset();
                 startForResult.launch(generation);
             }
         });

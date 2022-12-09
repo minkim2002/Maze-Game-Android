@@ -3,6 +3,7 @@ package edu.wm.cs.cs301.MinKim.gui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +23,8 @@ import edu.wm.cs.cs301.MinKim.R;
  * Collaborators: N/A
  */
 public class PlayActivity extends AppCompatActivity {
+
+    protected MediaPlayer playSong;
 
     protected int shortestPath = 10;
 

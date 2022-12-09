@@ -132,7 +132,7 @@ public class StatePlaying implements State {
 	 */
 	protected void startDrawer() {
 		cr = new CompassRose(mazePanel);
-		cr.setPositionAndSize(Constants.VIEW_WIDTH / 2, (int) (0.1 * Constants.VIEW_HEIGHT), 145);
+		cr.setPositionAndSize(Constants.VIEW_WIDTH / 2, (int) (0.1 * Constants.VIEW_HEIGHT), 100);
 
 		firstPersonView = new FirstPersonView(mazePanel, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT, Constants.MAP_UNIT,
 				Constants.STEP_SIZE, seenCells, maze.getRootnode());

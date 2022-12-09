@@ -6,7 +6,7 @@
     android:id="@+id/parentView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_image"
+    android:background="@drawable/title_seoul"
     tools:context=".gui.AMazeActivity">
 
     <TextView
@@ -17,6 +17,7 @@
         android:gravity="center_horizontal"
         android:text="@string/greetingText"
         android:textColor="@color/colorPrimary"
+        android:background="@color/colorBlack"
         android:textSize="36sp"
         app:fontFamily="casual"
         app:layout_constraintHorizontal_bias="0.644"
@@ -38,6 +39,7 @@
 
         <TextView
             android:id="@+id/difficultyText"
+            android:background="@color/colorBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/difficultyText"
@@ -48,6 +50,7 @@
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/difficultySeekBar"
             android:layout_width="match_parent"
+            android:background="@color/colorBlack"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:max="14"
@@ -70,6 +73,7 @@
 
         <TextView
             android:id="@+id/builderText"
+            android:background="@color/colorBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/builderText"
@@ -78,6 +82,7 @@
 
         <Spinner
             android:id="@+id/builderSpinner"
+            android:background="@color/colorBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -97,6 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
+            android:background="@color/colorBlack"
             android:text="@string/roomText"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp" />
@@ -147,7 +153,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimary"
-            android:backgroundTint="@color/colorHighlight"
+            android:backgroundTint="@color/colorBlack"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/revisitButton"

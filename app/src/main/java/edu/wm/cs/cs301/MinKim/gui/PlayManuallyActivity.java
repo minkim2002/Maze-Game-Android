@@ -2,6 +2,7 @@ package edu.wm.cs.cs301.MinKim.gui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -28,6 +29,12 @@ public class PlayManuallyActivity extends PlayActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manually_playing);
+        playSong = MediaPlayer.create(PlayManuallyActivity.this, R.raw.title_music);
+        playSong.start();
+        if(!playSong.isPlaying()){
+            playSong.reset();
+            playSong.start();
+        }
         //set up process
         Intent mazeGame = getIntent();
         Log.v("Game driver", Objects.requireNonNull(mazeGame.getStringExtra("Driver")));
@@ -47,6 +54,8 @@ public class PlayManuallyActivity extends PlayActivity {
         // Notify the user that the game ended
         Toast toast = Toast.makeText(PlayManuallyActivity.this, "Maze Solved", Toast.LENGTH_SHORT);
         toast.show();
+        playSong.pause();
+        playSong.reset();
         startActivity(stateWinning);
         finish();
     }

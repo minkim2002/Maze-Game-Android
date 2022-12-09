@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="appName">A Maze By Min Kim</string>
-    <string name="greetingText">Welcome to the maze</string>
+    <string name="greetingText">Welcome to SEOUL</string>
     <string name="builderText">Builder</string>
     <string name="driverText">Driver</string>
-    <string name="robotText">Robot</string>
-    <string name="modeText">Customize Your Robot</string>
+    <string name="robotText">Transportation</string>
+    <string name="modeText">Pick your transportation</string>
     <string name="roomText">Maze Rooms</string>
     <string name="exploreText">Explore</string>
     <string name="revisitText">Revisit</string>
-    <string name="loadingText">Building the Walls…</string>
-    <string name="playText">Begin Maze</string>
+    <string name="loadingText">Finding the path....</string>
+    <string name="playText">Time to travel</string>
     <string-array name="builder">
         <item>DFS</item>
         <item>Prim</item>
@@ -23,10 +23,10 @@
         <item>Wall Follower</item>
     </string-array>
     <string-array name="robot">
-        <item>Premium</item>
-        <item>Mediocre</item>
-        <item>SoSo</item>
-        <item>Shaky</item>
+        <item>KTX (Premium)</item>
+        <item>Car (Mediocre)</item>
+        <item>Bicycle (SoSo)</item>
+        <item>Your legs (Shaky)</item>
     </string-array>
     <string name="pathLengthText">Path Length: %1$d</string>
     <string name="showMapText">Show Map</string>
@@ -59,8 +59,6 @@
     <string name="totalEnergyConsumptionText">Energy Consumption: %1$s</string>
     <string name="newMazeText">Start New Maze</string>
 
-    <string name="winningText">Maze Solved</string>
-    <string name="losingText">Maze not Solved</string>
-    <string name="WinningText">Go2Winning</string>
-    <string name="LosingText">Go2Losing</string>
+    <string name="winningText">Welcome to BUSAN</string>
+    <string name="losingText">Your transportation failed...</string>
 </resources>

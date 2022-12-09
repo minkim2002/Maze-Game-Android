@@ -7,4 +7,5 @@
     <color name="colorTransparent">#68FFFFFF</color>
     <color name="colorOperational">#2FFF00</color>
     <color name="colorRepair">#FF0000</color>
+    <color name="colorBlack">#000000</color>
 </resources>

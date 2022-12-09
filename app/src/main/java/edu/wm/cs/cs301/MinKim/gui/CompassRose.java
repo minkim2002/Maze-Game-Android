@@ -151,7 +151,7 @@ public class CompassRose {
      */
 	private void drawBackground(final MazePanel mazePanel) {
 		// color setting hard coded as white
-		mazePanel.setColor(Color.WHITE);
+		mazePanel.setColor(Color.YELLOW);
 		// determine x,y coordinates for oval
 		final int x = centerX - size;
 		final int y = centerY - size;
@@ -277,24 +277,24 @@ public class CompassRose {
 		// currendDir South is going upward on the map
 		mazePanel.setColor((CardinalDirection.South == currentDir) ?
 				Color.GREEN :
-					Color.YELLOW);
+					Color.BLACK);
 		drawMarker(mazePanel, centerX, centerY - offset, "N");
 
 		mazePanel.setColor((CardinalDirection.East == currentDir) ?
 				Color.GREEN :
-				Color.YELLOW);
+				Color.BLACK);
 		drawMarker(mazePanel, centerX + offset, centerY, "E");
 
 		// WARNING: north south confusion
 		// currendDir North is going downwards on the map
 		mazePanel.setColor((CardinalDirection.North == currentDir) ?
 				Color.GREEN :
-				Color.YELLOW);
+				Color.BLACK);
 		drawMarker(mazePanel, centerX, centerY + offset, "S");
 
 		mazePanel.setColor((CardinalDirection.West == currentDir) ?
 				Color.GREEN :
-				Color.YELLOW);
+				Color.BLACK);
 		drawMarker(mazePanel, centerX - offset, centerY, "W");
 
 	}

@@ -6,6 +6,7 @@
     android:id="@+id/parentView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/play_seoul"
     tools:context=".gui.PlayAnimationActivity">
 
     <TextView
@@ -96,7 +97,6 @@
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
         android:layout_marginTop="200dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="@id/parentView"
