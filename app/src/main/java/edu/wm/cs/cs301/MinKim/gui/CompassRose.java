@@ -312,6 +312,7 @@ public class CompassRose {
         
     }
 
+
 	public void setMarkerFont(MazePanel mazePanel, String markerFont) {
 		this.markerFont = markerFont;
 		mazePanel.setFont(markerFont);

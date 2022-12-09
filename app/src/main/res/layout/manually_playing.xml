@@ -74,23 +74,11 @@
         android:orientation="horizontal">
 
         <edu.wm.cs.cs301.MinKim.gui.MazePanel
-            android:layout_width="match_parent"
-            android:layout_height="400dp" />
+            android:id="@+id/mazePanel"
+            android:layout_width="350dp"
+            android:layout_height="350dp" />
     </LinearLayout>
 
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/shortcutButton"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="450dp"
-        android:text="@string/shortcutText"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.099"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pathLengthText" />
 
     <ImageView
         android:id="@+id/forwardButton"

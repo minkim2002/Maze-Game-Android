@@ -5,8 +5,6 @@ package edu.wm.cs.cs301.MinKim.gui;
 
 import android.graphics.Color;
 
-import java.util.logging.Logger;
-
 import edu.wm.cs.cs301.MinKim.generation.CardinalDirection;
 import edu.wm.cs.cs301.MinKim.generation.Floorplan;
 import edu.wm.cs.cs301.MinKim.generation.Maze;
@@ -32,10 +30,6 @@ import edu.wm.cs.cs301.MinKim.generation.Maze;
  *
  */
 public class Map {
-	/**
-	 * The logger is used to track execution and report issues.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(Map.class.getName());
 
 
 	// keep local copies of values determined for UI appearance
@@ -138,7 +132,6 @@ public class Map {
 			boolean showMaze, boolean showSolution) {
         // viewers draw on the buffer graphics
         if (!mazePanel.isOperational()) {
-        	LOGGER.warning("Can't get graphics object to draw on, mitigate this by skipping draw operation") ;
             return;
         }
         final int viewDX = getViewDX(angle); 
@@ -188,7 +181,7 @@ public class Map {
 		final int mazeWidth = maze.getWidth() ;
 		final int mazeHeight = maze.getHeight() ;
 		
-		mazePanel.setColor(Color.WHITE);
+		mazePanel.setColor(MazePanel.WHITE);
 		
 		// note: 1/2 of width and height is the center of the screen
 		// the whole map is centered at the current position
@@ -463,9 +456,6 @@ public class Map {
 	private void drawSolution(MazePanel mazePanel, int offsetX, int offsetY, int px, int py) {
 
 		if (!maze.isValidPosition(px, py)) {
-			LOGGER.warning("Parameter error: position out of bounds: (" + px + "," + 
-					py + ") for maze of size " + maze.getWidth() + "," + 
-					maze.getHeight() + ", mitigation: skip drawing the solution line") ;
 			return ;
 		}
 		// current position on the solution path (sx,sy)
@@ -511,14 +501,5 @@ public class Map {
 			sy = neighbor[1];
 			distance = maze.getDistanceToExit(sx, sy) ;
 		}
-	}
-	
-
-	/**
-	 * Debug output
-	 * @param str the string to be printed for debugging purposes
-	 */
-	private void dbg(String str) {
-		LOGGER.fine(str);
 	}
 }

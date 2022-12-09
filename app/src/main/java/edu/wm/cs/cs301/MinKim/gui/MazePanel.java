@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -24,12 +25,18 @@ public class MazePanel extends View implements P7PanelF22 {
     private int width;
     private int height;
 
+    static final int WHITE = Color.WHITE;
+    static final int LIGHT_GRAY = Color.LTGRAY;
+    static final int GRAY = Color.GRAY;
+    static final int BLACK = Color.BLACK;
+    static final int RED = Color.RED;
+    static final int YELLOW = Color.YELLOW;
+
     public MazePanel(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        canvas = null;
-        paint = null;
-        bitmap = null;
-        update();
+        bitmap = Bitmap.createBitmap(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     /**
@@ -38,7 +45,7 @@ public class MazePanel extends View implements P7PanelF22 {
      */
     @Override
     public void commit() {
-        update();
+        invalidate();
     }
 
     /**
@@ -50,10 +57,10 @@ public class MazePanel extends View implements P7PanelF22 {
      */
     @Override
     public boolean isOperational() {
-        if (null != getCanvas()) {
-            return true;
+        if (canvas == null) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
@@ -105,10 +112,46 @@ public class MazePanel extends View implements P7PanelF22 {
      */
     @Override
     public void addBackground(float percentToExit) {
-        setColor(Color.BLACK);
-        addFilledRectangle(0, 500, 1000, 1000);
-        setColor(Color.GRAY);
-        addFilledRectangle(0, 0, 1000, 500);
+        setColor(getBackgroundColor(percentToExit, true));
+        addFilledRectangle(0, 0, width, height/2);
+        setColor(getBackgroundColor(percentToExit, false));
+        addFilledRectangle(0, height/2, width, height/2);
+    }
+
+    /**
+     * Helper method of addBackground
+     * @param percentToExit gives the distance to exit
+     * @param top true then top half of the screen
+     * @return
+     */
+    private int getBackgroundColor(float percentToExit, boolean top) {
+        return top ? blend(Color.YELLOW, Color.MAGENTA, percentToExit) :
+                blend(Color.LTGRAY, Color.GREEN, percentToExit);
+    }
+
+    /**
+     * Calculates the weighted average of the two given colors.
+     * The weight for the first color is expected to be between
+     * 0 and 1. The weight for the other color is then 1-weight0.
+     * The result is the weighted average of the red, green, and
+     * blue components of the colors. The resulting alpha value
+     * for transparency is the max of the alpha values of both colors.
+     * @param c0 the one color
+     * @param c1 the other color
+     * @param weight0 of c0
+     * @return blend of colors c0 and c1 as weighted average
+     */
+    private int blend(int c0, int c1, double weight0) {
+        if (weight0 < 0.1)
+            return c1;
+        if (weight0 > 0.95)
+            return c0;
+
+        int r = (int) (weight0 * Color.red(c0) + (1-weight0) * Color.red(c1));
+        int g = (int) (weight0 * Color.green(c0) + (1-weight0) * Color.green(c1));
+        int b = (int) (weight0 * Color.blue(c0) + (1-weight0) * Color.blue(c1));
+
+        return Color.rgb(r, g, b);
     }
 
     /**
@@ -184,6 +227,7 @@ public class MazePanel extends View implements P7PanelF22 {
      */
     @Override
     public void addLine(int startX, int startY, int endX, int endY) {
+        paint.setStrokeWidth(5);
         canvas.drawLine(startX, startY, endX, endY, paint);
     }
 
@@ -243,6 +287,13 @@ public class MazePanel extends View implements P7PanelF22 {
      */
     @Override
     public void addMarker(float x, float y, String str) {
+        Rect rect = new Rect();
+        paint.getTextBounds(str, 0, str.length(), rect);
+
+        x -= rect.width() / 2.0;
+        y += rect.height() / 2.0;
+
+        paint.setTextSize(75);
         canvas.drawText(str, x, y, paint);
     }
 
@@ -269,50 +320,12 @@ public class MazePanel extends View implements P7PanelF22 {
 
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
     }
 
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Log.v("Drawing", "Drawing");
-        addBackground(0);
-        myTestImage(canvas);
-    }
-
-    /**
-     * @param c the canvas object
-     */
-    private void myTestImage(Canvas c) {
-        setColor(Color.RED);
-        addFilledOval(0, 0, 100, 100);
-        setColor(Color.GREEN);
-        addFilledOval(100, 0, 100, 100);
-        setColor(Color.YELLOW);
-        addFilledRectangle(0, 100, 100, 100);
-        setColor(Color.BLUE);
-        int[] xPoints = {100, 100, 150, 150, 200, 100};
-        int[] yPoints = {100, 150, 200, 200, 150, 200};
-        addFilledPolygon(xPoints, yPoints, 6);
-        addLine(0, 200, 100, 300);
-        update(c);
-    }
-
-    /**
-     * Get a graphics object that could be used for drawing.
-     */
-    public Canvas getCanvas() {
-        if (null == canvas) {
-            if (null == bitmap) {
-                bitmap = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
-                if (null == bitmap) {
-                    Log.e("Error", "failed to create bitmap");
-                    return null;
-                }
-            }
-            canvas = new Canvas(bitmap);
-            paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        }
-        return canvas;
+        update(canvas);
     }
 
     /**
@@ -325,6 +338,8 @@ public class MazePanel extends View implements P7PanelF22 {
         }
         else {
             canvas.drawBitmap(bitmap, 0, 0, paint);
+            bitmap = Bitmap.createBitmap(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT, Bitmap.Config.ARGB_8888);
+            this.canvas = new Canvas(bitmap);
         }
     }
 
@@ -339,7 +354,7 @@ public class MazePanel extends View implements P7PanelF22 {
      * Draws the image on a graphics object
      */
     public void update() {
-        paint(getCanvas());
+        paint(canvas);
     }
 
     /**

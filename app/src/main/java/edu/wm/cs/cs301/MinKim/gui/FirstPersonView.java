@@ -422,7 +422,7 @@ public class FirstPersonView {
 		
 		// moved code for drawing bits and pieces into yet another method to 
 		// gain more clarity on what information is actually needed
-		mazePanel.setColor(wall.getColor());
+		mazePanel.setColor(Color.WHITE);
 		boolean drawn = drawPolygons(mazePanel, x1, x2, y11, y12, y21, y22);
 		
 		if (drawn && !wall.isSeen()) {

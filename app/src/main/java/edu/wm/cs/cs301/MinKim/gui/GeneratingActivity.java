@@ -36,7 +36,7 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
     private Handler handler;
 
     private Factory factory;
-    private Order.Builder builder;
+    private Builder builder;
 
     private int skillLevel;
     private int seed;
@@ -129,16 +129,16 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
         isPerfect = !intent.getBooleanExtra("Room", false);
         Log.v("Room", ""+ !isPerfect);
         if(intent.getStringExtra("Builder").equals("DFS")){
-            builder = Order.Builder.DFS;
+            builder = Builder.DFS;
         }
         if(intent.getStringExtra("Builder").equals("Prim")){
-            builder = Order.Builder.Prim;
+            builder = Builder.Prim;
         }
         if(intent.getStringExtra("Builder").equals("Boruvka")){
-            builder = Order.Builder.Prim;
+            builder = Builder.Prim;
         }
         Log.v("Builder", ""+ builder);
-        factory.order((Order) this);
+        factory.order(this);
         factory.waitTillDelivered();
 
         handler.post(new Runnable() {
@@ -174,7 +174,27 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
         seed = 2;
         isPerfect = false;
         gameStart = false;
+    }
 
+    @Override
+    public void deliver(Maze mazeConfig) {
+        MazeSingleton.getMazeSingleton().setMaze(mazeConfig);
+    }
+
+    @Override
+    public void updateProgress(int percentage) {
+        if (percentage <= 100 && progress < percentage) {
+            progress = percentage;
+            ProgressBar progressBar = findViewById(R.id.progressBar);
+            progressBar.setProgress(progress);
+            progressBar.setMax(100);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        defaultState();
     }
 
     @Override
@@ -195,21 +215,6 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
     @Override
     public int getSeed() {
         return seed;
-    }
-
-    @Override
-    public void deliver(Maze mazeConfig) {
-        MazeSingleton.getMazeSingleton().setMaze(mazeConfig);
-    }
-
-    @Override
-    public void updateProgress(int percentage) {
-        if (percentage <= 100 && progress < percentage) {
-            progress = percentage;
-            ProgressBar progressBar = findViewById(R.id.progressBar);
-            progressBar.setProgress(progress);
-            progressBar.setMax(100);
-        }
     }
 
 }

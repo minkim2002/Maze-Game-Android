@@ -58,63 +58,6 @@ public interface P7PanelF22 {
     public int getColor();
 
     /**
-     * Determine the color for this wall.
-     *
-     * @param distance
-     *            to exit
-     * @param cc
-     *            obscure
-     */
-    static int getWallColor(int distance, int cc, int extensionX) {
-        final int d = distance / 4;
-        // mod used to limit the number of colors to 6
-        final int rgbValue = calculateRGBValue(d, extensionX);
-        //System.out.println("Initcolor rgb: " + rgbValue);
-        String hex;
-        switch (((d >> 3) ^ cc) % 6) {
-            case 0:
-                hex = String.format("%02X%02X%02X", rgbValue, RGB_DEF, RGB_DEF);
-                return Integer.parseInt(hex,16);
-            case 1:
-                hex = String.format("%02X%02X%02X", RGB_DEF, RGB_DEF_GREEN, RGB_DEF);
-                return Integer.parseInt(hex,16);
-            case 2:
-                hex = String.format("%02X%02X%02X", RGB_DEF, RGB_DEF, rgbValue);
-                return Integer.parseInt(hex,16);
-            case 3:
-                hex = String.format("%02X%02X%02X", rgbValue, RGB_DEF_GREEN, RGB_DEF);
-                return Integer.parseInt(hex,16);
-            case 4:
-                hex = String.format("%02X%02X%02X", RGB_DEF, RGB_DEF_GREEN, rgbValue);
-                return Integer.parseInt(hex,16);
-            case 5:
-                hex = String.format("%02X%02X%02X", rgbValue, RGB_DEF, rgbValue);
-                return Integer.parseInt(hex,16);
-            default:
-                hex = String.format("%02X%02X%02X", RGB_DEF, RGB_DEF, RGB_DEF);
-                return Integer.parseInt(hex,16);
-        }
-    }
-
-    /**
-     * Computes an RGB value based on the given numerical value.
-     *
-     * @param distance
-     *            value to select color
-     * @return the calculated RGB value
-     */
-    static int calculateRGBValue(final int distance, final int extensionX) {
-        // compute rgb value, depends on distance and x direction
-        // 7 in binary is 0...0111
-        // use AND to get last 3 digits of distance
-        final int part1 = distance & 7;
-        final int add = (extensionX != 0) ? 1 : 0;
-        final int rgbValue = ((part1 + 2 + add) * 70) / 8 + 80;
-        return rgbValue;
-    }
-
-
-    /**
      * Draws two solid rectangles to provide a background.
      * Note that this also erases any previous drawings.
      * The color setting adjusts to the distance to the exit to
@@ -252,4 +195,60 @@ public interface P7PanelF22 {
      * @param hintValue the value indicating preferences for the specified hint category.
      */
     public void setRenderingHint(P7RenderingHints hintKey, P7RenderingHints hintValue);
+
+    /**
+     * Determine the color for this wall.
+     *
+     * @param distance
+     *            to exit
+     * @param cc
+     *            obscure
+     */
+    static int getWallColor(int distance, int cc, int extensionX) {
+        final int d = distance / 4;
+        // mod used to limit the number of colors to 6
+        final int rgbValue = calculateRGBValue(d, extensionX);
+        //System.out.println("Initcolor rgb: " + rgbValue);
+        String hex;
+        switch (((d >> 3) ^ cc) % 6) {
+            case 0:
+                hex = String.format("%02X%02X%02X", rgbValue, RGB_DEF, RGB_DEF);
+                return Integer.parseInt(hex,16);
+            case 1:
+                hex = String.format("%02X%02X%02X", RGB_DEF, RGB_DEF_GREEN, RGB_DEF);
+                return Integer.parseInt(hex,16);
+            case 2:
+                hex = String.format("%02X%02X%02X", RGB_DEF, RGB_DEF, rgbValue);
+                return Integer.parseInt(hex,16);
+            case 3:
+                hex = String.format("%02X%02X%02X", rgbValue, RGB_DEF_GREEN, RGB_DEF);
+                return Integer.parseInt(hex,16);
+            case 4:
+                hex = String.format("%02X%02X%02X", RGB_DEF, RGB_DEF_GREEN, rgbValue);
+                return Integer.parseInt(hex,16);
+            case 5:
+                hex = String.format("%02X%02X%02X", rgbValue, RGB_DEF, rgbValue);
+                return Integer.parseInt(hex,16);
+            default:
+                hex = String.format("%02X%02X%02X", RGB_DEF, RGB_DEF, RGB_DEF);
+                return Integer.parseInt(hex,16);
+        }
+    }
+
+    /**
+     * Computes an RGB value based on the given numerical value.
+     *
+     * @param distance
+     *            value to select color
+     * @return the calculated RGB value
+     */
+    static int calculateRGBValue(final int distance, final int extensionX) {
+        // compute rgb value, depends on distance and x direction
+        // 7 in binary is 0...0111
+        // use AND to get last 3 digits of distance
+        final int part1 = distance & 7;
+        final int add = (extensionX != 0) ? 1 : 0;
+        final int rgbValue = ((part1 + 2 + add) * 70) / 8 + 80;
+        return rgbValue;
+    }
 }

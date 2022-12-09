@@ -109,7 +109,6 @@ public class PlayAnimationActivity extends PlayActivity {
             @Override
             public void onClick(View v) {
                 finalState.putExtra("Manual", false);
-                finalState.putExtra("Path Length", pathLength);
                 finalState.putExtra("Shortest Path", shortestPath);
                 finalState.putExtra("Energy Consumption", consumptionEnergyLevel);
                 Log.v("Animation", result ? "Proceeding to WinningActivity" : "Proceeding to LosingActivity");

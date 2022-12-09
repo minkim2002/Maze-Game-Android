@@ -1,14 +1,16 @@
 package edu.wm.cs.cs301.MinKim.gui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 import edu.wm.cs.cs301.MinKim.R;
+import edu.wm.cs.cs301.MinKim.generation.MazeSingleton;
 
 /**
  * @author Min Kim
@@ -27,8 +29,26 @@ public class PlayManuallyActivity extends PlayActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manually_playing);
         //set up process
+        Intent mazeGame = getIntent();
+        Log.v("Game driver", Objects.requireNonNull(mazeGame.getStringExtra("Driver")));
+        statePlaying = new StatePlaying();
+        statePlaying.setMaze(MazeSingleton.getMazeSingleton().getMaze());
+        statePlaying.start(this, findViewById(R.id.mazePanel));
         setButtons();
         setPathLength();
+    }
+
+    @Override
+    public void switchToWinning(Context context, int distance) {
+        super.switchToWinning(context, distance);
+        // Intent with an information about the game mode, the path length, and the shortest path
+        stateWinning.putExtra("Manual", true);
+        Log.v("Play Manual End", "Proceed to WinningActivity");
+        // Notify the user that the game ended
+        Toast toast = Toast.makeText(PlayManuallyActivity.this, "Maze Solved", Toast.LENGTH_SHORT);
+        toast.show();
+        startActivity(stateWinning);
+        finish();
     }
 
     /**
@@ -39,23 +59,6 @@ public class PlayManuallyActivity extends PlayActivity {
         setMove();
         setMenu(this);
         setZoom();
-        //shortcut button (navigate to winning)
-        Button shortcut = findViewById(R.id.shortcutButton);
-        shortcut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Intent for winning, passing extra information needed
-                Intent winningState = new Intent(PlayManuallyActivity.this, WinningActivity.class);
-                winningState.putExtra("Manual", true);
-                winningState.putExtra("Path Length", pathLength);
-                winningState.putExtra("Shortest Path", shortestPath);
-                Log.v("Manual Activity", "Proceed to WinningActivity");
-                Toast toast = Toast.makeText(PlayManuallyActivity.this, "Solved the maze", Toast.LENGTH_SHORT);
-                toast.show();
-                startActivity(winningState);
-                finish();
-            }
-        });
     }
 
     /**
@@ -63,30 +66,33 @@ public class PlayManuallyActivity extends PlayActivity {
      */
     private void setMove() {
         ImageView forwardButton = findViewById(R.id.forwardButton);
-        forwardButton.setOnClickListener(v -> {
-            pathLength += 1;
-            setPathLength();
-        });
         ImageView leftButton = findViewById(R.id.leftButton);
-        leftButton.setOnClickListener(v -> {
-            pathLength += 1;
-            setPathLength();
-        });
         ImageView rightButton = findViewById(R.id.rightButton);
-        rightButton.setOnClickListener(v -> {
-            pathLength += 1;
-            setPathLength();
-        });
         ImageView backButton = findViewById(R.id.backwardButton);
-        backButton.setOnClickListener(v -> {
-            pathLength += 1;
-            setPathLength();
-        });
         ImageView jumpButton = findViewById(R.id.jumpButton);
-        jumpButton.setOnClickListener(v -> {
-            pathLength += 1;
-            setPathLength();
-        });
+        configureMoveButton(forwardButton, Constants.UserInput.UP);
+        configureMoveButton(leftButton, Constants.UserInput.LEFT);
+        configureMoveButton(rightButton, Constants.UserInput.RIGHT);
+        configureMoveButton(jumpButton, Constants.UserInput.JUMP);
+        configureMoveButton(backButton, Constants.UserInput.DOWN);
     }
 
+    private void configureMoveButton(ImageView button, Constants.UserInput move){
+        if (move == Constants.UserInput.UP || move == Constants.UserInput.DOWN || move == Constants.UserInput.JUMP) {
+            button.setOnClickListener(v -> {
+                int currentDist = statePlaying.distTraveled;
+                Log.v("Move", move.toString());
+                statePlaying.handleUserInput(move, 0);
+                // update the path length
+                if (statePlaying.distTraveled > currentDist) {
+                    setPathLength();
+                }
+            });
+        } else {
+            button.setOnClickListener(v -> {
+                Log.v("Rotate", move.toString());
+                statePlaying.handleUserInput(move, 0);
+            });
+        }
+    }
 }
