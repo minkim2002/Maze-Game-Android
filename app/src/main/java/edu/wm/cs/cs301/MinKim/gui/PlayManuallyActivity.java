@@ -1,7 +1,6 @@
 package edu.wm.cs.cs301.MinKim.gui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +10,7 @@ import android.widget.Toast;
 import java.util.Objects;
 
 import edu.wm.cs.cs301.MinKim.R;
+import edu.wm.cs.cs301.MinKim.generation.Maze;
 import edu.wm.cs.cs301.MinKim.generation.MazeSingleton;
 
 /**
@@ -36,15 +36,23 @@ public class PlayManuallyActivity extends PlayActivity {
             playSong.start();
         }
         //set up process
-        Intent mazeGame = getIntent();
-        Log.v("Game driver", Objects.requireNonNull(mazeGame.getStringExtra("Driver")));
+        Bundle mazeGame = getIntent().getExtras();
+        Maze maze = MazeSingleton.getMazeSingleton().getMaze();
+        Log.v("Driver Inputted", Objects.requireNonNull(mazeGame.getString("Driver")));
         statePlaying = new StatePlaying();
         statePlaying.setMaze(MazeSingleton.getMazeSingleton().getMaze());
         statePlaying.start(this, findViewById(R.id.mazePanel));
         setButtons();
         setPathLength(statePlaying.distTraveled);
+        getShortestPath(maze);
     }
 
+    /**
+     * Intent for final state
+     * @param context for the intent
+     * @param result whether maze was solved or not
+     * @param distance total distance traveled
+     */
     @Override
     public void switchToWinning(Context context, int distance, boolean result) {
         super.switchToWinning(context, distance, true);
@@ -58,16 +66,6 @@ public class PlayManuallyActivity extends PlayActivity {
         playSong.reset();
         startActivity(stateWinning);
         finish();
-    }
-
-    /**
-     * Set up the buttons for movement, menu, and zoom
-     */
-    private void setButtons() {
-        //set up buttons
-        setMove();
-        setMenu(this);
-        setZoom();
     }
 
     /**
@@ -86,6 +84,20 @@ public class PlayManuallyActivity extends PlayActivity {
         configureMoveButton(backButton, Constants.UserInput.DOWN);
     }
 
+    /**
+     * Set up the buttons for movement, menu, and zoom
+     */
+    private void setButtons() {
+        //set up necessary buttons
+        setMove();
+        setMenu(this);
+        setZoom();
+    }
+
+    /**
+     * Set up a listener for the button corresponding to each input
+     * @param button the object of button in charge of move
+     */
     private void configureMoveButton(ImageView button, Constants.UserInput move){
         if (move == Constants.UserInput.UP || move == Constants.UserInput.DOWN || move == Constants.UserInput.JUMP) {
             button.setOnClickListener(v -> {

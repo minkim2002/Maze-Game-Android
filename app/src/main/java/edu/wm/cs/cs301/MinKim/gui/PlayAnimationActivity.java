@@ -55,24 +55,25 @@ public class PlayAnimationActivity extends PlayActivity {
             playSong.start();
         }
         //Get the intent to check whether the information is sent
-        Intent play = getIntent();
-        Log.v("Maze", Objects.requireNonNull(play.getStringExtra("Maze")));
-        String driver = play.getStringExtra("Driver");
-        Log.v("Driver", Objects.requireNonNull(play.getStringExtra("Driver")));
-        String robot = play.getStringExtra("Robot");
-        Log.v("Robot", Objects.requireNonNull(play.getStringExtra("Robot")));
+        Bundle play = getIntent().getExtras();
+        Maze maze = MazeSingleton.getMazeSingleton().getMaze();
+        Log.v("Maze", Objects.requireNonNull(play.getString("Maze")));
+        String driver = play.getString("Driver");
+        Log.v("Driver", Objects.requireNonNull(play.getString("Driver")));
+        String robot = play.getString("Robot");
+        Log.v("Robot", Objects.requireNonNull(play.getString("Robot")));
 
         statePlaying = new StatePlaying();
+        animation = new Handler(Looper.getMainLooper());
         statePlaying.setMaze(MazeSingleton.getMazeSingleton().getMaze());
         setUpDriverAndRobot(statePlaying, MazeSingleton.getMazeSingleton().getMaze(), driver, robot);
         statePlaying.start(this, findViewById(R.id.mazePanel));
-        animation = new Handler(Looper.getMainLooper());
 
         setComponents();
         setAnimation();
 
-
         setPathLength(this.driver.getPathLength());
+        getShortestPath(maze);
     }
 
     /**
@@ -82,10 +83,12 @@ public class PlayAnimationActivity extends PlayActivity {
         setMenu(this);
         setZoom();
         setAnimationScreen();
+        showMap = true;
+        statePlaying.handleUserInput(Constants.UserInput.TOGGLELOCALMAP, 0);
     }
 
     /**
-     * Set up the start or stop animation button
+     * Set up the start or stop animation button, set up the animation speed bar
      */
     private void setAnimationScreen() {
         //Listener for the slider of animation speed
@@ -97,7 +100,7 @@ public class PlayAnimationActivity extends PlayActivity {
             @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(Slider slider) {
-                double speed = ((int)slider.getValue() * -0.5 + 1) * 1000;
+                double speed = ((int)slider.getValue() * -0.2 + 1) * 1000;
                 if (autoSpeed != speed) {
                     autoSpeed = speed;
                     Log.v("Animation Speed", "" + autoSpeed);
@@ -131,11 +134,14 @@ public class PlayAnimationActivity extends PlayActivity {
         });
     }
 
+    /**
+     * Configure the animation thread and pass it on to the handler
+     */
     public void setAnimation() {
         animationThread = () -> {
             try {
                 driver.drive1Step2Exit();
-                updateEnergyProgress(driver.getEnergyConsumption());
+                energyProgress(driver.getEnergyConsumption());
                 setPathLength(driver.getPathLength());
                 for (Robot.Direction dir: Robot.Direction.values()){
                     updateSensor(dir, isOperational(dir));
@@ -155,13 +161,22 @@ public class PlayAnimationActivity extends PlayActivity {
     }
 
     /**
+     * Link the robot energy consumption with energy consumption progress bar
+     * @param energyConsumption the current energy level of the robot
+     */
+    private void energyProgress(float energyConsumption) {
+        ProgressBar energyBar = findViewById(R.id.energyBar);
+        energyBar.setProgress((int) (((startingEnergyLevel-energyConsumption)/startingEnergyLevel) * 100));
+    }
+
+    /**
      * Set up the final button
      * @param result whether the driver solved the maze or not
      */
     private void switchToEndScreen(final boolean result) {
         final Intent endScreen = result ? new Intent(PlayAnimationActivity.this, WinningActivity.class)
                 : new Intent(PlayAnimationActivity.this, LosingActivity.class);
-        endScreen.putExtra("Manual Mode", false);
+        endScreen.putExtra("Manual", false);
         endScreen.putExtra("Energy Consumption", driver.getEnergyConsumption());
         endScreen.putExtra("Path Length", driver.getPathLength());
         endScreen.putExtra("Shortest Path", shortestPath);
@@ -175,22 +190,29 @@ public class PlayAnimationActivity extends PlayActivity {
         finish();
     }
 
+    /**
+     * Set up the driver and robot
+     * @param statePlaying statePlaying
+     * @param maze the maze the driver will be traversing
+     * @param driver type of driver
+     * @param robot type of robot
+     */
     private void setUpDriverAndRobot(StatePlaying statePlaying, Maze maze, String driver, String robot) {
         if (driver.equals("Wizard")) {
             this.driver = new Wizard();
             this.robot = new ReliableRobot();
         } else {
             this.driver = new WallFollower();
-            if (robot.equals("Premium")) {
+            if (robot.equals("KTX")) {
                 this.robot = new UnreliableRobot(1, 1, 1, 1);
             }
-            if (robot.equals("Mediocre")) {
-                this.robot = new UnreliableRobot(1, 1, 1, 1);
+            if (robot.equals("Car")) {
+                this.robot = new UnreliableRobot(1, 0, 0, 1);
             }
-            if (robot.equals("SoSo")) {
-                this.robot = new UnreliableRobot(0, 1, 0, 1);
+            if (robot.equals("Bicycle")) {
+                this.robot = new UnreliableRobot(0, 1, 1, 0);
             }
-            if (robot.equals("Shaky")) {
+            if (robot.equals("Legs")) {
                 this.robot = new UnreliableRobot(0, 0, 0, 0);
             }
             for (Robot.Direction direction: Robot.Direction.values())
@@ -201,12 +223,15 @@ public class PlayAnimationActivity extends PlayActivity {
                     Log.v("Driver Setup", "Reliable Sensor, moving on...");
                 }
         }
+        this.robot.setController(statePlaying);
         this.driver.setMaze(maze);
         this.driver.setRobot(this.robot);
-        this.robot.setController(statePlaying);
         startingEnergyLevel = this.robot.getBatteryLevel();
     }
 
+    /**
+     * the animation ends if the back button is pressed
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -215,11 +240,10 @@ public class PlayAnimationActivity extends PlayActivity {
         finish();
     }
 
-    private void updateEnergyProgress(float energyConsumption) {
-        ProgressBar energyBar = findViewById(R.id.energyBar);
-        energyBar.setProgress((int) (((startingEnergyLevel-energyConsumption)/startingEnergyLevel) * 100));
-    }
-
+    /**
+     * Determines whether the sensor is operational or not
+     * @param direction of the sensor
+     */
     protected boolean isOperational(Robot.Direction direction) {
         try {
             // the sensor is operational if no exception is thrown
@@ -232,26 +256,31 @@ public class PlayAnimationActivity extends PlayActivity {
         }
     }
 
+    /**
+     * Update the display to indicate whether the robot is operational or under the repair process
+     * @param sensor the sensor that is going to be updated
+     * @param isOperational status of the sensor
+     */
     private void updateSensor(Robot.Direction sensor, boolean isOperational) {
         switch(sensor) {
             case FORWARD:
-                View forwardSensor = findViewById(R.id.forwardSensor);
-                forwardSensor.setBackgroundColor(isOperational ? ContextCompat.getColor(PlayAnimationActivity.this, R.color.colorOperational)
+                View forward = findViewById(R.id.forwardSensor);
+                forward.setBackgroundColor(isOperational ? ContextCompat.getColor(PlayAnimationActivity.this, R.color.colorOperational)
                         : ContextCompat.getColor(PlayAnimationActivity.this, R.color.colorRepair));
                 break;
             case LEFT:
-                View leftSensor = findViewById(R.id.leftSensor);
-                leftSensor.setBackgroundColor(isOperational ? ContextCompat.getColor(PlayAnimationActivity.this, R.color.colorOperational)
+                View left = findViewById(R.id.leftSensor);
+                left.setBackgroundColor(isOperational ? ContextCompat.getColor(PlayAnimationActivity.this, R.color.colorOperational)
                         : ContextCompat.getColor(PlayAnimationActivity.this, R.color.colorRepair));
                 break;
             case RIGHT:
-                View rightSensor = findViewById(R.id.rightSensor);
-                rightSensor.setBackgroundColor(isOperational ? ContextCompat.getColor(PlayAnimationActivity.this, R.color.colorOperational)
+                View right = findViewById(R.id.rightSensor);
+                right.setBackgroundColor(isOperational ? ContextCompat.getColor(PlayAnimationActivity.this, R.color.colorOperational)
                         : ContextCompat.getColor(PlayAnimationActivity.this, R.color.colorRepair));
                 break;
             case BACKWARD:
-                View backwardSensor = findViewById(R.id.backwardSensor);
-                backwardSensor.setBackgroundColor(isOperational ? ContextCompat.getColor(PlayAnimationActivity.this, R.color.colorOperational)
+                View backward = findViewById(R.id.backwardSensor);
+                backward.setBackgroundColor(isOperational ? ContextCompat.getColor(PlayAnimationActivity.this, R.color.colorOperational)
                         : ContextCompat.getColor(PlayAnimationActivity.this, R.color.colorRepair));
                 break;
         }

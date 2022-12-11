@@ -145,41 +145,6 @@ public class MazePanel extends View implements P7PanelF22 {
         paint.setShader(null);
     }
 
-    /**
-     * Helper method of addBackground
-     * @param percentToExit gives the distance to exit
-     * @param top true then top half of the screen
-     * @return
-     */
-    private int getBackgroundColor(float percentToExit, boolean top) {
-        return top ? blend(Color.YELLOW, Color.MAGENTA, percentToExit) :
-                blend(Color.LTGRAY, Color.GREEN, percentToExit);
-    }
-
-    /**
-     * Calculates the weighted average of the two given colors.
-     * The weight for the first color is expected to be between
-     * 0 and 1. The weight for the other color is then 1-weight0.
-     * The result is the weighted average of the red, green, and
-     * blue components of the colors. The resulting alpha value
-     * for transparency is the max of the alpha values of both colors.
-     * @param c0 the one color
-     * @param c1 the other color
-     * @param weight0 of c0
-     * @return blend of colors c0 and c1 as weighted average
-     */
-    private int blend(int c0, int c1, double weight0) {
-        if (weight0 < 0.1)
-            return c1;
-        if (weight0 > 0.95)
-            return c0;
-
-        int r = (int) (weight0 * Color.red(c0) + (1-weight0) * Color.red(c1));
-        int g = (int) (weight0 * Color.green(c0) + (1-weight0) * Color.green(c1));
-        int b = (int) (weight0 * Color.blue(c0) + (1-weight0) * Color.blue(c1));
-
-        return Color.rgb(r, g, b);
-    }
 
     /**
      * Adds a filled rectangle.
@@ -213,7 +178,7 @@ public class MazePanel extends View implements P7PanelF22 {
      */
     @Override
     public void addFilledPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-        //addPolygon(xPoints, yPoints, nPoints);
+        addPolygon(xPoints, yPoints, nPoints);
     }
 
     /**

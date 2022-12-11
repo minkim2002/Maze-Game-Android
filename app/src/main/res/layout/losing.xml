@@ -59,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="@string/totalEnergyConsumptionText"
+        android:background="@color/colorBlack"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"

@@ -34,11 +34,12 @@ import edu.wm.cs.cs301.MinKim.generation.SingleRandom;
 public class AMazeActivity extends AppCompatActivity {
 
     private SharedPreferences mazePreference;
+    private SharedPreferences.Editor editor;
     private MediaPlayer titleSong;
 
-    private String builder;
+    private String builderString;
 
-    private int skillLevel;
+    private int difficultyLevel;
     private int seed;
 
     private boolean room;
@@ -63,38 +64,41 @@ public class AMazeActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         builder.setAdapter(adapter);
         // Listeners for the buttons that will generate the maze
-        setGeneration((Button) findViewById(R.id.revisitButton), true);
-        setGeneration((Button) findViewById(R.id.exploreButton), false);
+        setGeneration((Button) findViewById(R.id.revisitButton), "revisit");
+        setGeneration((Button) findViewById(R.id.exploreButton), "explore");
     }
 
     /**
      * Configure the listeners for the buttons that will generate the maze
      * @param button the button the listener resides in
      */
-    public void setGeneration(Button button, boolean visit) {
+    public void setGeneration(Button button, String function) {
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
                 // receive the selected builder
                 Spinner builder = findViewById(R.id.builderSpinner);
-                String builderString = builder.getSelectedItem().toString();
+                builderString = builder.getSelectedItem().toString();
                 // receive the selected level
-                SeekBar difficultyLevel = findViewById(R.id.difficultySeekBar);
-                int lv = difficultyLevel.getProgress();
-                //In case of revisiting, receive the seed
-                if(visit){
-                    seed = mazePreference.getInt(skillLevel+", "+builder+", "+room, 2);
-                }else{
-                    seed = SingleRandom.getRandom().nextInt();
-                }
+                SeekBar difficultyLevelBar = findViewById(R.id.difficultySeekBar);
+                difficultyLevel = difficultyLevelBar.getProgress();
                 //receive the information about the presence of rooms
-                SwitchMaterial room = findViewById(R.id.roomSwitch);
-                boolean isRoom = room.isChecked();
+                SwitchMaterial roomSwitch = findViewById(R.id.roomSwitch);
+                room = roomSwitch.isChecked();
+
+                //In case of revisiting, get the information from the last round
+                if(function.equals("explore")){
+                    seed = SingleRandom.getRandom().nextInt();
+                }else{
+                    Log.v("yea", "yea");
+                    seed = mazePreference.getInt(builderString+difficultyLevel+room, SingleRandom.getRandom().nextInt());
+                }
 
                 //Generating intent with received information
                 Intent generation = new Intent(AMazeActivity.this, GeneratingActivity.class);
                 generation.putExtra("Builder", builderString);
-                generation.putExtra("Difficulty Level", lv);
-                generation.putExtra("Room", isRoom);
+                generation.putExtra("Difficulty Level", difficultyLevel);
+                generation.putExtra("Room", room);
+                generation.putExtra("Seed", seed);
 
                 //Toast as a notification about the new activity
                 Toast toast = Toast.makeText(AMazeActivity.this, "Generating maze", Toast.LENGTH_SHORT);
@@ -131,7 +135,6 @@ public class AMazeActivity extends AppCompatActivity {
             //check the code
             if (result.getResultCode() == Activity.RESULT_OK) {
                 Bundle maze = result.getData().getExtras();
-                assert(maze != null) : "maze configuration is not supposed to be null";
 
                 //Configure the driver and robot bases on the information received
                 String driverString = maze.getString("Driver");
@@ -139,11 +142,9 @@ public class AMazeActivity extends AppCompatActivity {
                 String robotString = maze.getString("Robot");
                 Log.v("Robot Chosen", robotString);
                 int seed = maze.getInt("Seed");
-                Log.v("Seed", ""+ seed);
-
-                // save maze settings to shared preferences
+                Log.v("Seed", seed+"");
                 SharedPreferences.Editor editor = mazePreference.edit();
-                editor.putInt(skillLevel+", "+builder+", "+ room, seed);
+                editor.putInt(builderString+difficultyLevel+room, seed);
                 editor.apply();
 
                 //Game intent with given information

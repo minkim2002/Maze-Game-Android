@@ -129,20 +129,20 @@ public class GeneratingActivity extends AppCompatActivity implements Runnable, O
     @Override
     public void run() {
         //Get the intent sent from the AMazeActivity
-        Intent intent = getIntent();
-        skillLevel = intent.getIntExtra("Difficulty Level", 0);
+        Bundle intent = getIntent().getExtras();
+        skillLevel = intent.getInt("Difficulty Level", 0);
         Log.v("SkillLevel", ""+ skillLevel);
-        isPerfect = !intent.getBooleanExtra("Room", false);
-        seed = intent.getIntExtra("Seed", 0);
-        Log.v("Seed", ""+seed);
-        Log.v("Room", ""+ !isPerfect);
-        if(intent.getStringExtra("Builder").equals("DFS")){
+        isPerfect = !intent.getBoolean("Room", false);
+        Log.v("Room", ":"+ isPerfect);
+        seed = intent.getInt("Seed");
+        Log.v("Seed", ":"+ seed);
+        if(intent.getString("Builder").equals("DFS")){
             builder = Builder.DFS;
         }
-        if(intent.getStringExtra("Builder").equals("Prim")){
+        if(intent.getString("Builder").equals("Prim")){
             builder = Builder.Prim;
         }
-        if(intent.getStringExtra("Builder").equals("Boruvka")){
+        if(intent.getString("Builder").equals("Boruvka")){
             builder = Builder.Prim;
         }
         Log.v("Builder", ""+ builder);

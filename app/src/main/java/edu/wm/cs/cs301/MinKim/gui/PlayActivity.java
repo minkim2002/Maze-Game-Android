@@ -131,14 +131,14 @@ public class PlayActivity extends AppCompatActivity {
         ImageView in = findViewById(R.id.zoomInButton);
         in.setOnClickListener(v -> {
             zoom += 3;
-            statePlaying.handleUserInput(Constants.UserInput.ZOOMIN, 0);
             Log.v("zoom", ""+zoom);
+            statePlaying.handleUserInput(Constants.UserInput.ZOOMIN, 0);
         });
         ImageView out = findViewById(R.id.zoomOutButton);
         out.setOnClickListener(v -> {
             zoom -= 3;
-            statePlaying.handleUserInput(Constants.UserInput.ZOOMOUT, 0);
             Log.v("zoom", ""+zoom);
+            statePlaying.handleUserInput(Constants.UserInput.ZOOMOUT, 0);
         });
     }
 
@@ -150,4 +150,5 @@ public class PlayActivity extends AppCompatActivity {
         int[] startingPositionPos = maze.getStartingPosition();
         shortestPath = maze.getDistanceToExit(startingPositionPos[0], startingPositionPos[1]);
     }
+
 }

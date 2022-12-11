@@ -231,7 +231,7 @@ public class Map {
 				(seenWalls.hasWall(x, y, CardinalDirection.West) || showMaze)) {
 			mazePanel.setColor(seenWalls.hasWall(x, y, CardinalDirection.West) ?
 					Color.WHITE :
-						Color.GRAY);
+						Color.LTGRAY);
 			mazePanel.addLine(startX, startY, startX, startY - mapScale);
 		}
 	}
@@ -262,7 +262,7 @@ public class Map {
 		if (hasAHorizontalWall(x, y) && (seenWalls.hasWall(x,y, CardinalDirection.North) || showMaze) ) {
 			mazePanel.setColor(seenWalls.hasWall(x,y, CardinalDirection.North) ?
 					Color.WHITE :
-						Color.GRAY);
+						Color.LTGRAY);
 			mazePanel.addLine(startX, startY, startX + mapScale, startY);
 		}
 	}

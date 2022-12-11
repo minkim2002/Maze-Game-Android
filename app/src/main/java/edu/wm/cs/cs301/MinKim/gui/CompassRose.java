@@ -136,7 +136,7 @@ public class CompassRose {
         x[0] = centerX;
         y[0] = centerY;
         // use the same color for all arms
-        mazePanel.setColor(Color.BLACK);
+        mazePanel.setColor(mazePanel.BLACK);
         // draw each arm
         drawArmNorth(mazePanel, length, width, x, y);
         drawArmEast(mazePanel, length, width, x, y);
@@ -179,7 +179,8 @@ public class CompassRose {
         mazePanel.addFilledPolygon(x, y, 3);
         // adjust coordinate for 2nd point and draw 2nd triangle
         y[2] = centerY - width;
-        mazePanel.addPolygon(x, y, 3);
+		mazePanel.setColor(Color.RED);
+        mazePanel.addFilledPolygon(x, y, 3);
 	}
 	/**
 	 * Draw an arm in east direction.
@@ -193,6 +194,7 @@ public class CompassRose {
 		// observation: the 2 triangles to the right are drawn the same
 		// way as for the left if one inverts the sign for length and width
 		// i.e., exchanges addition and subtraction
+		mazePanel.setColor(Color.RED);
 		drawArmWest(mazePanel, -length, -width, x, y);
 	}
 	/**
@@ -213,7 +215,8 @@ public class CompassRose {
         mazePanel.addFilledPolygon(x, y, 3);
         // adjust coordinate for 2nd point and draw 2nd triangle
         x[2] = centerX - width;
-        mazePanel.addPolygon(x, y, 3);
+		mazePanel.setColor(Color.RED);
+        mazePanel.addFilledPolygon(x, y, 3);
 	}
 	/**
 	 * Draw an arm in north direction.
@@ -227,6 +230,7 @@ public class CompassRose {
 		// observation: the 2 triangles to the top are drawn the same
 		// way as for the bottom if one inverts the sign for length and width
 		// i.e., exchanges addition and subtraction
+		mazePanel.setColor(Color.RED);
 		drawArmSouth(mazePanel, -length, -width, x, y);
 	}
 
@@ -245,9 +249,9 @@ public class CompassRose {
 		// only one variable is needed
 		final int w = width - 2 * CIRCLE_BORDER;
 		// draw both arcs
-		mazePanel.setColor(Color.WHITE);
+		mazePanel.setColor(Color.BLACK);
         mazePanel.addArc(x, y, w, w, 45, 180);
-        mazePanel.setColor(Color.WHITE);
+        mazePanel.setColor(Color.BLACK);
         mazePanel.addArc(x, y, w, w, 180 + 45, 180);
 	}
 
