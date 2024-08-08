@@ -1,7 +1,7 @@
  
- # Maze-Game-Android
+ # Maze Game in Android Setting
  
- CSCI 301 Software Development Project: Maze Game in Android
+ Maze Game in Android
  
  Preferred IDE to run: Android Studio
  
